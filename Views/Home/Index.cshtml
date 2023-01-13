@@ -1,0 +1,59 @@
+﻿@model List<EmmaWorkManagementProject.Database.Entities.UserTask>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="css/font-glyphicons.css">
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <div class="sidebar border-end bg-white" id="sidebar-wrapper">
+        <div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action list-group-item-light action-active p-3" href="#!">List</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Calendar</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Timeline</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+        </div>
+    </div>
+    <!-- Page content wrapper-->
+    <div class="container-fluid">
+        <!-- Page content-->
+        <div class="container p-3">
+            <div class="col-6">
+                <h1>List</h1>
+            </div>
+            <div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Summary</th>
+                            <th scope="col">Date of creation</th>
+                            <th scope="col">Due date</th>
+                            <th scope="col">Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var task in Model)
+                        {
+                            <tr>
+                                <td><input type="checkbox" /></td>
+                                <td>@task.Summary</td>
+                                <td>@task.DateOfCreation</td>
+                                <td>@task.DateOfCompletion</td>
+                                <td>@task.Priority</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+
