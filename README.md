@@ -1,4 +1,4 @@
-# EmmaWorkManagementProject
+Для использования проекта необходимо:
 
 1. Склонировать проект
 2. В appsetings.json connectionStrings : "DefaulsConnection" поменять строку подключения
