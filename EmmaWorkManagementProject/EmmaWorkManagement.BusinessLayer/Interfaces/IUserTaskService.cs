@@ -11,15 +11,17 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
 {
     public interface IUserTaskService
     {
-        Task<IReadOnlyCollection<UserTaskDto>> GetTodayUserTasksAsync();
+        Task<IReadOnlyCollection<UserTaskDto>> GetTodayUserTasksAsync(int activeAccountId);
 
-        Task<IReadOnlyCollection<UserTaskDto>> GetImportantUserTasksAsync();
+        Task<IReadOnlyCollection<UserTaskDto>> GetImportantUserTasksAsync(int activeAccountId);
 
-        Task<IReadOnlyCollection<UserTaskDto>> GetUpcomingUserTasksAsync();
+        Task<IReadOnlyCollection<UserTaskDto>> GetUpcomingUserTasksAsync(int activeAccountId);
 
-        Task<IReadOnlyCollection<UserTaskDto>> GetOverdueUserTasksAsync();
+        Task<IReadOnlyCollection<UserTaskDto>> GetOverdueUserTasksAsync(int activeAccountId);
 
-        Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(string name);
+        Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(int activeAccountId, string name);
+
+        //Task<IReadOnlyCollection<UserTaskDto>> GetAllByInclude();
 
         Task AddUserTask(UserTaskDto userTask);
 

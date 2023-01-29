@@ -20,12 +20,12 @@ namespace EmmaWorkManagement.Data.Repositories
 
         public async Task Create(Account entity)
         {
-            await _applicationDbContext.AddAsync(entity);
+            await _applicationDbContext.Accounts.AddAsync(entity);
         }
 
         public async Task Delete(Account entity)
         {
-            _applicationDbContext.Remove(entity);
+            _applicationDbContext.Accounts.Remove(entity);
         }
 
         public async Task<Account> GetById(int id)

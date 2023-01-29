@@ -86,8 +86,16 @@ ul li {
     display: block;
 }
 
-.btn{
-    font-weight:500;
+.register{
+    margin: auto
+}
+
+.login{
+    margin:auto;
+}
+
+.btn {
+    font-weight: 500;
 }
 
 .btn-light, .btn-light:focus {

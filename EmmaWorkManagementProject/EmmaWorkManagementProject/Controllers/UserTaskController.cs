@@ -15,30 +15,30 @@ namespace EmmaWorkManagementProject.Controllers
         private readonly IUserTaskService _userTaskService;
         private readonly IAccountService _accountService;
         private readonly ApplicationDbContext _applicationDbContext;
-        private readonly IAccountRepository _accountRepository;
 
-        public UserTaskController(IUserTaskService userTaskService, IAccountService accountService, ApplicationDbContext applicationDbContext, IAccountRepository accountRepository)
+        public UserTaskController(IUserTaskService userTaskService, IAccountService accountService, ApplicationDbContext applicationDbContext)
         {
             _userTaskService = userTaskService;
             _accountService = accountService;
             _applicationDbContext = applicationDbContext;
-            _accountRepository = accountRepository;
         }
 
         public async Task<IActionResult> GetTodayUserTasks()
         {
-            var response = await _userTaskService.GetTodayUserTasksAsync();
+            var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+            var activeAccountId = activeAccount.Id;
+            var response = await _userTaskService.GetTodayUserTasksAsync(activeAccountId);
             try
             {
-                var result = response.Select(q => new UserTaskViewModel
-                {
-                    Id = q.Id,
-                    Name = q.Name,
-                    Summary = q.Summary,
-                    DateOfCreation = q.DateOfCreation,
-                    DateOfCompletion = q.DateOfCompletion,
-                    Priority = q.Priority,
-                }).ToArray();
+                    var result = response.Select(q => new UserTaskViewModel
+                    {
+                        Id = q.Id,
+                        Name = q.Name,
+                        Summary = q.Summary,
+                        DateOfCreation = q.DateOfCreation,
+                        DateOfCompletion = q.DateOfCompletion,
+                        Priority = q.Priority,
+                    }).ToArray();
 
                 return View(result);
             }
@@ -50,7 +50,8 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetImportantUserTasks()
         {
-            var response = await _userTaskService.GetImportantUserTasksAsync();
+            var activeAccountId = (await _accountService.GetActiveAccount(User.Identity.Name)).Id;
+            var response = await _userTaskService.GetImportantUserTasksAsync(activeAccountId);
             try
             {
                 var result = response.Select(q => new UserTaskViewModel
@@ -73,7 +74,9 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetUpcomingUserTasks()
         {
-            var response = await _userTaskService.GetUpcomingUserTasksAsync();
+            var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+            var activeAccountId = activeAccount.Id;
+            var response = await _userTaskService.GetUpcomingUserTasksAsync(activeAccountId);
             try
             {
                 var result = response.Select(q => new UserTaskViewModel
@@ -90,14 +93,15 @@ namespace EmmaWorkManagementProject.Controllers
             }
             catch (Exception ex)
             {
-
                 return RedirectToAction("Error");
             }
         }
 
         public async Task<IActionResult> GetOverdueUserTasks()
         {
-            var response = await _userTaskService.GetOverdueUserTasksAsync();
+            var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+            var activeAccountId = activeAccount.Id;
+            var response = await _userTaskService.GetOverdueUserTasksAsync(activeAccountId);
             try
             {
                 var result = response.Select(q => new UserTaskViewModel
@@ -114,7 +118,6 @@ namespace EmmaWorkManagementProject.Controllers
             }
             catch (Exception ex)
             {
-
                 return RedirectToAction("Error");
             }
         }
@@ -130,7 +133,9 @@ namespace EmmaWorkManagementProject.Controllers
         {
             try
             {
-                var response = await _userTaskService.GetUserTasksByNameAsync(name);
+                var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+                var activeAccountId = activeAccount.Id;
+                var response = await _userTaskService.GetUserTasksByNameAsync(activeAccountId, name);
                 var result = response.Select(q => new UserTaskViewModel
                 {
                     Id = q.Id,
@@ -162,7 +167,7 @@ namespace EmmaWorkManagementProject.Controllers
             try
             {
                 var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
-
+                var activeAccountId = activeAccount.Id;
                 var newUserTask = new UserTask()
                 {
                     Name = name,
@@ -171,21 +176,11 @@ namespace EmmaWorkManagementProject.Controllers
                     DateOfCompletion = dateOfCompletion,
                     Summary = summary,
                     AccountId = activeAccount.Id,
-                    Account = activeAccount
                 };
 
-                if(activeAccount.UserTasks == null)
-                {
-                    activeAccount.UserTasks = new List<UserTask>()
-                    {
-                        newUserTask,
-                    };
-                }
-                else
-                {
-                    activeAccount.UserTasks.Add(newUserTask);
-                }
-                _accountRepository.Save();
+                activeAccount.UserTasks.Add(newUserTask);
+
+                _applicationDbContext.SaveChanges();
 
                 return RedirectToAction("GetTodayUserTasks");
             }

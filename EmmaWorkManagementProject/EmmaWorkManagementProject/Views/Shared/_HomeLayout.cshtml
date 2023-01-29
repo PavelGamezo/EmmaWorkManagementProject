@@ -18,7 +18,8 @@
                     <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <h3>You are ready to move!</h3>
+                        <a class="nav-link" asp-controller="UserTask" asp-action="GetTodayUserTasks">You are ready to move!</a>
+                        <partial name="_LogoutPartial" />
                     }
                     else
                     {

@@ -14,6 +14,6 @@ namespace EmmaWorkManagement.Entities
 
         public string Email { get; set; }
 
-        public ICollection<UserTask> UserTasks { get; set; }
+        public ICollection<UserTask> UserTasks { get; set; } = new List<UserTask>();
     }
 }

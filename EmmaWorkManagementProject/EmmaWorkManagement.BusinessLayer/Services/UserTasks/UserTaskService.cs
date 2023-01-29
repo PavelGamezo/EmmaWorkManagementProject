@@ -56,57 +56,67 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
         }
         */
 
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetTodayUserTasksAsync()
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetTodayUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
+                                            .Where(q=>q.AccountId == activeAccountId)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q=>q.DateOfCompletion.Day == DateTime.Now.Day)
                                             .ToArrayAsync();
         }
         
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetImportantUserTasksAsync()
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetImportantUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
+                                            .Where(q => q.AccountId == activeAccountId)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q => q.Priority == "High")
                                             .ToArrayAsync();
             
         }
         
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetUpcomingUserTasksAsync()
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetUpcomingUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
+                                            .Where(q => q.AccountId == activeAccountId)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q=>q.DateOfCompletion > DateTime.Now || q.DateOfCompletion.Day == DateTime.Now.Day)
                                             .ToArrayAsync();
         } 
         
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetOverdueUserTasksAsync()
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetOverdueUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
+                                            .Where(q => q.AccountId == activeAccountId)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q=>q.DateOfCompletion < DateTime.Now && q.DateOfCompletion.Day != DateTime.Now.Day)
                                             .ToArrayAsync();
         }
         
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(string name)
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(int activeAccountId, string name)
         {
             return await _userTaskRepository.GetAll()
+                                            .Where(q => q.AccountId == activeAccountId)
                                             .Where(q => q.Name.Contains(name))
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByDayTimeAsync()
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByDayTimeAsync(int activeAccountId)
         {
             var date = DateTime.Now;
             return await _userTaskRepository.GetAll()
+                                            .Where(q => q.AccountId == activeAccountId)
                                             .Where(q => q.DateOfCompletion.Day == date.Day && q.DateOfCompletion.Year == date.Year)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
-
-            // if (IReadOnlyCollection<UserTaskDto> is null || IReadOnlyCollection<UserTaskDto> == 0) throw new ObjectNotFoundException;
         }
+
+        /*public async Task<IReadOnlyCollection<UserTaskDto>> GetAllByIncludeAsync()
+        {
+
+            return await _userTaskRepository.GetAllByInclude().Where(q=>q.)
+        }*/
 
         public async Task DeleteUserTask(int id)
         {

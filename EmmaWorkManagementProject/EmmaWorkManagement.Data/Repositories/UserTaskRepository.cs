@@ -16,7 +16,7 @@ namespace EmmaWorkManagementProject.Database.Repositories
 
         public async Task Create(UserTask entity)
         {
-            await _applicationDbContext.AddAsync(entity);
+            await _applicationDbContext.UserTasks.AddAsync(entity);
         }
 
         public async Task Delete(UserTask entity)
@@ -38,5 +38,10 @@ namespace EmmaWorkManagementProject.Database.Repositories
         {
             return _applicationDbContext.UserTasks.AsQueryable();
         }
+        
+        /*public IQueryable<UserTask> GetAllByInclude()
+        {
+            return _applicationDbContext.UserTasks.Include(q => q.Account).AsQueryable();
+        }*/
     }
 }
