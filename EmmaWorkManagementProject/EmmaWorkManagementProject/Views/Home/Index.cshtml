@@ -1,0 +1,28 @@
+﻿@model EmmaWorkManagementProject.Models.UserTaskViewModel[]
+
+@{
+    Layout = "_HomeLayout";
+    ViewData["Title"] = "Home Page";
+}
+
+<h1 class="cover-heading">
+    Organize your work and life.
+</h1>
+<p class="lead">
+    Good planning is an essential part of our lives. 
+    Whether it's an apartment renovation, a birthday party or a project at work,
+    it is always important to have a clear workflow structure for the successful implementation of any event.
+    That is why the Emma is an indispensable tool for daily task planning.
+</p>
+@if(User.Identity.IsAuthenticated)
+{
+    <p class="lead">
+        <a asp-controller="UserTask" asp-action="GetTodayUserTasks" class="btn btn-lg btn-light">Start your day</a>
+    </p>
+}
+else
+{
+    <p class="lead">
+        <a asp-controller="Account" asp-action="Login" class="btn btn-lg btn-light">Start your day</a>
+    </p>
+}
