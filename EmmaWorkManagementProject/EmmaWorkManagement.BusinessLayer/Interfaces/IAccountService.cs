@@ -15,5 +15,7 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
         Task DeleteAccount(int id);
 
         Task<AccountDto> GetAccount(int id);
+
+        Task<Account> GetActiveAccount(string email);
     }
 }

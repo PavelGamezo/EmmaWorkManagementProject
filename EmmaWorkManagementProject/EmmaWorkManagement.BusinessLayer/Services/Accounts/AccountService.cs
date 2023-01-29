@@ -46,6 +46,12 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
             var mappedAccount = _mapper.Map<AccountDto>(account);
             return mappedAccount;
         }
+
+        public async Task<Account> GetActiveAccount(string email)
+        {
+            var account = _accountRepository.GetAll().FirstOrDefault(q => q.Email == email);
+            return account;
+        }
         #endregion
     }
 }
