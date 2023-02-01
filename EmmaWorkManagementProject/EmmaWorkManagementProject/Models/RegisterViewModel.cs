@@ -9,8 +9,9 @@ namespace EmmaWorkManagementProject.Models
         [MinLength(1, ErrorMessage = "The minimum length must be greater than one character")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Enter Password")]
+        [Required(ErrorMessage = "Enter surname")]
         [Display(Name = "Surname")]
+        [MinLength(1, ErrorMessage = "The minimum length must be greater than one character")]
         public string? Surname { get; set; }
 
         [Display(Name = "Password")]

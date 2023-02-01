@@ -1,4 +1,5 @@
-﻿using EmmaWorkManagement.Entities.Entities;
+﻿using EmmaWorkManagement.Entities;
+using EmmaWorkManagement.Entities.Entities;
 
 namespace EmmaWorkManagement.Entities
 {
@@ -13,6 +14,8 @@ namespace EmmaWorkManagement.Entities
         public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public UserProfile UserProfile { get; set; }
 
         public ICollection<UserTask> UserTasks { get; set; } = new List<UserTask>();
     }

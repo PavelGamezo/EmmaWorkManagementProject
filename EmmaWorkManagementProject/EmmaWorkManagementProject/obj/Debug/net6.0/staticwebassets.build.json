@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XPZqwtcsGCLgLXZ9NrE0HIPTygx5zABsK6qIeG61VeI=",
+  "Hash": "uH8uxNPzv/nCtFGHcZBJAHsmGxiAhlM5mGZZxUBQWIw=",
   "Source": "EmmaWorkManagementProject",
   "BasePath": "_content/EmmaWorkManagementProject",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\EmmaWorkManagementProject.bundle.scp.css"
+    },
+    {
+      "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\css\\AddStyle.css",
+      "SourceId": "EmmaWorkManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\",
+      "BasePath": "_content/EmmaWorkManagementProject",
+      "RelativePath": "css/AddStyle.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\AddStyle.css"
     },
     {
       "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\css\\site.css",

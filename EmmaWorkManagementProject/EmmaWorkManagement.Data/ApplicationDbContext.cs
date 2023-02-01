@@ -1,5 +1,6 @@
 ﻿using EmmaWorkManagement.Data.Configurations;
 using EmmaWorkManagement.Entities;
+using EmmaWorkManagement.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection;
@@ -15,8 +16,9 @@ namespace EmmaWorkManagement.Data
 
         }
 
-        public DbSet<Account> Accounts { get; set; } = null!;
-        public DbSet<UserTask> UserTasks { get; set; } = null!;
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<UserTask> UserTasks { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +26,7 @@ namespace EmmaWorkManagement.Data
 
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new UserTaskConfiguration());
+            modelBuilder.ApplyConfiguration(new UserProfileConfiguration());
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

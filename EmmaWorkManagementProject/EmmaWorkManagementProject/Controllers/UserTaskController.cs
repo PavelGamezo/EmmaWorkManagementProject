@@ -25,7 +25,7 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetTodayUserTasks()
         {
-            var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             var activeAccountId = activeAccount.Id;
             var response = await _userTaskService.GetTodayUserTasksAsync(activeAccountId);
             try
@@ -50,7 +50,7 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetImportantUserTasks()
         {
-            var activeAccountId = (await _accountService.GetActiveAccount(User.Identity.Name)).Id;
+            var activeAccountId = (await _accountService.GetAccountByEmail(User.Identity.Name)).Id;
             var response = await _userTaskService.GetImportantUserTasksAsync(activeAccountId);
             try
             {
@@ -74,7 +74,7 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetUpcomingUserTasks()
         {
-            var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             var activeAccountId = activeAccount.Id;
             var response = await _userTaskService.GetUpcomingUserTasksAsync(activeAccountId);
             try
@@ -99,7 +99,7 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetOverdueUserTasks()
         {
-            var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             var activeAccountId = activeAccount.Id;
             var response = await _userTaskService.GetOverdueUserTasksAsync(activeAccountId);
             try
@@ -133,7 +133,7 @@ namespace EmmaWorkManagementProject.Controllers
         {
             try
             {
-                var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+                var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
                 var activeAccountId = activeAccount.Id;
                 var response = await _userTaskService.GetUserTasksByNameAsync(activeAccountId, name);
                 var result = response.Select(q => new UserTaskViewModel
@@ -160,15 +160,15 @@ namespace EmmaWorkManagementProject.Controllers
             return View();
         }
 
-        // Будет изменяться!
         [HttpPost]
         public async Task<IActionResult> AddUserTask(string name, string summary, string priority, DateTime dateOfCompletion)
         {
             try
             {
-                var activeAccount = await _accountService.GetActiveAccount(User.Identity.Name);
+                var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
                 var activeAccountId = activeAccount.Id;
-                var newUserTask = new UserTask()
+
+                activeAccount.UserTasks.Add(new UserTask()
                 {
                     Name = name,
                     DateOfCreation = DateTime.Now,
@@ -176,10 +176,7 @@ namespace EmmaWorkManagementProject.Controllers
                     DateOfCompletion = dateOfCompletion,
                     Summary = summary,
                     AccountId = activeAccount.Id,
-                };
-
-                activeAccount.UserTasks.Add(newUserTask);
-
+                });
                 _applicationDbContext.SaveChanges();
 
                 return RedirectToAction("GetTodayUserTasks");

@@ -17,6 +17,7 @@ namespace EmmaWorkManagement.Data.Extensions
                 options.UseSqlServer(connectionString);
             });
 
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserTaskRepository, UserTaskRepository>();
 

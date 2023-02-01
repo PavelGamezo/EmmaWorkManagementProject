@@ -25,4 +25,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EmmaWorkManagement.Exceptions\EmmaWorkManagement.Exceptions.csproj" />
+  </ItemGroup>
+
 </Project>

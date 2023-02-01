@@ -35,16 +35,16 @@ namespace EmmaWorkManagementProject.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Account account = await _applicationDbContext.Accounts.FirstOrDefaultAsync(q => q.Name == model.Name && q.Surname == model.Surname && q.Password == model.Password);
-
+                    var account = await _applicationDbContext.Accounts.FirstOrDefaultAsync(q => q.Email == model.Email && q.Password == model.Password);
                     if (account != null)
                     {
                         await Authenticate(account.Email, $"{account.Name} {account.Surname}");
 
                         return RedirectToAction("GetTodayUserTasks", "UserTask");
                     }
-                    ModelState.AddModelError("", "Incorrect username and/or password");
                 }
+                ModelState.AddModelError("", "Incorrect username and/or password");
+
                 return View(model);
             }
             catch (Exception ex)
@@ -64,22 +64,23 @@ namespace EmmaWorkManagementProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var searchingAccount = _applicationDbContext.Accounts.FirstOrDefault(q => q.Name == account.Name && q.Surname == account.Surname);
+                var searchingAccount = _accountService.GetAccountByEmail(account.Email).Result;
                 if (searchingAccount == null)
                 {
-                    var registeredAccount = new AccountDto()
+                    await _accountService.Register(new AccountDto()
                     {
                         Name = account.Name,
                         Surname = account.Surname,
                         Password = account.Password,
                         Email = account.Email
-                    };
-
-                    await _accountService.Register(registeredAccount);
+                    });
                     await Authenticate(account.Email, $"{account.Name} {account.Surname}");
 
                     return RedirectToActionPermanent("GetTodayUserTasks", "UserTask");
                 }
+                ModelState.AddModelError("", "Account has already excist");
+
+                return View(account);
             }
             else
             {

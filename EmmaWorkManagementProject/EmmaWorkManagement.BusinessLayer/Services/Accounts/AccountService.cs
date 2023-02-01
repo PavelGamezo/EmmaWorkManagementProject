@@ -3,7 +3,9 @@ using EmmaWorkManagement.BusinessLayer.Dtos;
 using EmmaWorkManagement.BusinessLayer.Interfaces;
 using EmmaWorkManagement.Data.Interaces;
 using EmmaWorkManagement.Data.Interfaces;
+using EmmaWorkManagement.Data.Repositories;
 using EmmaWorkManagement.Entities;
+using EmmaWorkManagement.Entities.Entities;
 using EmmaWorkManagementProject.Database.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,11 +19,13 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
     {
         private readonly IMapper _mapper;
         private readonly IAccountRepository _accountRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public AccountService(IMapper mapper, IAccountRepository accountRepository)
+        public AccountService(IMapper mapper, IAccountRepository accountRepository, IUserProfileRepository userProfileRepository)
         {
             _mapper = mapper;
             _accountRepository = accountRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         #region IAccountService Members
@@ -36,6 +40,16 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
         public async Task Register(AccountDto account)
         {
             var mappingAccount = _mapper.Map<Account>(account);
+            var newProfile = new UserProfile()
+            {
+                Account = mappingAccount,
+                Name = mappingAccount.Name,
+                About = "Default",
+                Surname = mappingAccount.Surname,
+                Registered = DateTime.Now,
+                Email = mappingAccount.Email,
+            };
+            await _userProfileRepository.Create(newProfile);
             await _accountRepository.Create(mappingAccount);
             await _accountRepository.Save();
         }
@@ -47,10 +61,18 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
             return mappedAccount;
         }
 
-        public async Task<Account> GetActiveAccount(string email)
+        public async Task<Account> GetAccountByEmail(string email)
         {
             var account = _accountRepository.GetAll().FirstOrDefault(q => q.Email == email);
             return account;
+        }
+
+        public async Task UpdateAccountByProfile(UserProfileDto userProfile)
+        {
+            var account = await _accountRepository.GetById(userProfile.Id);
+            account.Name = userProfile.Name;
+            account.Surname = userProfile.Surname;
+            await _accountRepository.Save();
         }
         #endregion
     }

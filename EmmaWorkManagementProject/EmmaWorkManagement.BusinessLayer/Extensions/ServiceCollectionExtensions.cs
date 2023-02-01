@@ -1,7 +1,9 @@
 ﻿using EmmaWorkManagement.BusinessLayer.Interfaces;
 using EmmaWorkManagement.BusinessLayer.Services.Accounts;
+using EmmaWorkManagement.BusinessLayer.Services.UserProfiles;
 using EmmaWorkManagement.BusinessLayer.Services.UserTasks;
 using EmmaWorkManagement.Data.Extensions;
+using EmmaWorkManagement.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ namespace EmmaWorkManagement.BusinessLayer.Extensions
         {
             services.AddScoped<IUserTaskService, UserTaskService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddDatabase(connectionString);
             services.AddAutoMapper(Assembly.GetCallingAssembly(),
                        Assembly.GetExecutingAssembly());

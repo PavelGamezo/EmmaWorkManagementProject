@@ -13,9 +13,8 @@ namespace EmmaWorkManagementProject.Models
 
         [Display(Name = "Summary")]
         [Required(ErrorMessage = "Enter task summary")]
-        [Range(0, 100, ErrorMessage = "Length must be between 0 and 100")]
+        [Range(0, 100, ErrorMessage = "Length must be between 0 and 1000")]
         public string? Summary { get; set; }
-
 
         public DateTime DateOfCreation { get; set; }
 

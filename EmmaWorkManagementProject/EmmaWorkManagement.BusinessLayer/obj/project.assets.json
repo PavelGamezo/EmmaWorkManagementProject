@@ -2090,6 +2090,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "EmmaWorkManagement.Entities": "1.0.0",
           "EmmaWorkManagement.Exceptions": "1.0.0"
         },
@@ -2106,6 +2107,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
+          "EmmaWorkManagement.Exceptions": "1.0.0",
           "Microsoft.AspNetCore.Authentication": "2.2.0",
           "Microsoft.AspNetCore.Authentication.Core": "2.2.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
@@ -6317,6 +6319,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "AutoMapper >= 12.0.1",
       "EmmaWorkManagement.Data >= 1.0.0",
       "EmmaWorkManagement.Entities >= 1.0.0",
       "EmmaWorkManagement.Exceptions >= 1.0.0"
@@ -6375,6 +6378,12 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "AutoMapper": {
+            "target": "Package",
+            "version": "[12.0.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

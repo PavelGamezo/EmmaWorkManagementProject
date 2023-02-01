@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EmmaWorkManagement.Data\EmmaWorkManagement.Data.csproj" />
     <ProjectReference Include="..\EmmaWorkManagement.Entities\EmmaWorkManagement.Entities.csproj" />
     <ProjectReference Include="..\EmmaWorkManagement.Exceptions\EmmaWorkManagement.Exceptions.csproj" />

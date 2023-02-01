@@ -1,4 +1,6 @@
-﻿namespace EmmaWorkManagement.Entities
+﻿using AutoMapper;
+
+namespace EmmaWorkManagement.Entities
 {
     public class UserTask
     {

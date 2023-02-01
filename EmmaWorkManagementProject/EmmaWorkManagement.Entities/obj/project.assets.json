@@ -1667,6 +1667,26 @@
             "rid": "win"
           }
         }
+      },
+      "EmmaWorkManagement.Exceptions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AutoMapper": "12.0.1",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
+          "Microsoft.AspNetCore.Authentication": "2.2.0",
+          "Microsoft.AspNetCore.Authentication.Core": "2.2.0",
+          "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
+          "Microsoft.EntityFrameworkCore": "7.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.2",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0"
+        },
+        "compile": {
+          "bin/placeholder/EmmaWorkManagement.Exceptions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EmmaWorkManagement.Exceptions.dll": {}
+        }
       }
     }
   },
@@ -4423,12 +4443,18 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "EmmaWorkManagement.Exceptions/1.0.0": {
+      "type": "project",
+      "path": "../EmmaWorkManagement.Exceptions/EmmaWorkManagement.Exceptions.csproj",
+      "msbuildProject": "../EmmaWorkManagement.Exceptions/EmmaWorkManagement.Exceptions.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "AutoMapper >= 12.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.0",
+      "EmmaWorkManagement.Exceptions >= 1.0.0",
       "Microsoft.AspNetCore.Authentication >= 2.2.0",
       "Microsoft.AspNetCore.Authentication.Core >= 2.2.0",
       "Microsoft.AspNetCore.Mvc.Core >= 2.2.5",
@@ -4470,7 +4496,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagement.Exceptions\\EmmaWorkManagement.Exceptions.csproj": {
+              "projectPath": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagement.Exceptions\\EmmaWorkManagement.Exceptions.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

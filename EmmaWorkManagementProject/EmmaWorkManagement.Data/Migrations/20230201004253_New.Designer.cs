@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmmaWorkManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230129153641_CreateMigration")]
-    partial class CreateMigration
+    [Migration("20230201004253_New")]
+    partial class New
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,47 @@ namespace EmmaWorkManagement.Data.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("EmmaWorkManagement.Entities.Entities.UserProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("About")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Registered")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
+
+                    b.ToTable("UserProfiles");
+                });
+
             modelBuilder.Entity("EmmaWorkManagement.Entities.UserTask", b =>
                 {
                     b.Property<int>("Id")
@@ -96,6 +137,17 @@ namespace EmmaWorkManagement.Data.Migrations
                     b.ToTable("UserTasks");
                 });
 
+            modelBuilder.Entity("EmmaWorkManagement.Entities.Entities.UserProfile", b =>
+                {
+                    b.HasOne("EmmaWorkManagement.Entities.Account", "Account")
+                        .WithOne("UserProfile")
+                        .HasForeignKey("EmmaWorkManagement.Entities.Entities.UserProfile", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("EmmaWorkManagement.Entities.UserTask", b =>
                 {
                     b.HasOne("EmmaWorkManagement.Entities.Account", "Account")
@@ -109,6 +161,9 @@ namespace EmmaWorkManagement.Data.Migrations
 
             modelBuilder.Entity("EmmaWorkManagement.Entities.Account", b =>
                 {
+                    b.Navigation("UserProfile")
+                        .IsRequired();
+
                     b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618

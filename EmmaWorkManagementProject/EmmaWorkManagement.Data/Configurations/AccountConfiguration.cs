@@ -1,4 +1,5 @@
 ﻿using EmmaWorkManagement.Entities;
+using EmmaWorkManagement.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -19,6 +20,9 @@ namespace EmmaWorkManagement.Data.Configurations
             builder.Property(x => x.Surname).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Password).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(100);
+
+            builder.HasOne(q => q.UserProfile)
+                   .WithOne(q => q.Account);
         }
     }
 }

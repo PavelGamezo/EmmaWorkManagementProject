@@ -5,3 +5,7 @@ menuBtn.addEventListener('click', function () {
 	menuBtn.classList.toggle('active');
 	menu.classList.toggle('active');
 })
+
+$('#myModal').on('shown.bs.modal', function () {
+	$('#myInput').trigger('focus')
+})

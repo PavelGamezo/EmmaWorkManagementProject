@@ -33,13 +33,12 @@ ul li {
 }
 
 .inner{
-    height: 36px;
     display: flex;
     justify-content:space-between;
 }
 
 .masthead{
-    margin-bottom: 12em;
+    margin-bottom: auto;
 }
 
 .masterhead-brand {
