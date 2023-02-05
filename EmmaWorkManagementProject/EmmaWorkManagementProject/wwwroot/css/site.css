@@ -67,7 +67,12 @@
     html {
         position: relative;
         min-height: 100%;
+        height: 100vh;
         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    }
+
+    body{
+        overflow: hidden;
     }
 
     ul li {
@@ -230,19 +235,19 @@
         padding-right: 0;
     }
 
-        .menu-btn:hover {
-            background-color: #999;
-            border-radius: 3px 3px;
-            transition: all 0.25s;
-        }
+    .menu-btn:hover {
+        background-color: #999;
+        border-radius: 3px 3px;
+        transition: all 0.25s;
+    }
 
-        .menu-btn span:nth-of-type(2) {
-            top: calc(40% - 5px);
-        }
+    .menu-btn span:nth-of-type(2) {
+        top: calc(40% - 5px);
+    }
 
-        .menu-btn span:nth-of-type(3) {
-            top: calc(62% + 5px);
-        }
+    .menu-btn span:nth-of-type(3) {
+        top: calc(62% + 5px);
+    }
 
     .hamburger-container {
         height: auto;
@@ -276,6 +281,7 @@
         position: absolute;
         z-index: 1;
         width: 100%;
+        height: 90%;
         padding: 15px;
         background: #ffffff;
         transform: translateX(-100%);

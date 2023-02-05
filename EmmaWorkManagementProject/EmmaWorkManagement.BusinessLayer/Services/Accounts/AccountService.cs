@@ -69,7 +69,7 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
 
         public async Task UpdateAccountByProfile(UserProfileDto userProfile)
         {
-            var account = await _accountRepository.GetById(userProfile.Id);
+            var account = _accountRepository.GetAll().FirstOrDefault(q => q.Id == userProfile.Id);
             account.Name = userProfile.Name;
             account.Surname = userProfile.Surname;
             await _accountRepository.Save();

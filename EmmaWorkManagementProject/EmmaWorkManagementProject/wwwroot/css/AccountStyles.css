@@ -1,0 +1,141 @@
+﻿.gradient-custom {
+    /* fallback for old browsers */
+    background: #e3e3e3;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+}
+
+.html {
+    font-size: 14px;
+    height: 100vh;
+}
+
+a{
+    color: #333;
+}
+
+a:hover {
+    color: #333;
+}
+
+.header_sidebar__text{
+    color: black;
+    font-size: 1.2rem;
+    margin-bottom: 0;
+}
+
+.main_content {
+    height: 92vh;
+    overflow: auto scroll;
+}
+
+.sidebarSettings {
+    padding: 0.5rem 1.5rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebarAccount {
+    padding: 0.5rem 1.5rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar_container__content {
+    padding: .5rem;
+    gap: 4px;
+}
+
+.content_list__active {
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.list_item {
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #555;
+}
+
+.list_item:hover {
+    background-color: rgba(255, 255, 255, .5);
+    color: #555;
+}
+
+.action_link {
+    width: 100%;
+    display: flex;
+}
+
+.action_image{
+    margin-right: 5px;
+}
+
+.sidebarAccount_button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    border-radius: 4px;
+}
+
+.sidebarAccount_button:hover {
+    background-color: #e7e7e7;
+}
+
+.main_content_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: #333;
+    gap: 15px;
+    display: grid;
+}
+
+.image_info_container {
+    color: #333;
+    display: flex;
+}
+
+.image_info_text{
+    font-size: 1.2rem;
+}
+
+.image_upload_button {
+    color: #333;
+}
+
+.image_upload_button:hover {
+    background-color: #e3e3e3;
+    color: #333;
+}
+
+.image_button_container {
+    gap: 5px;
+    display: grid;
+    padding-left: 10px;
+}
+
+.upper {
+    height: 20px;
+}
+
+.button_laber_text {
+    font-size: 12px;
+    color: #777;
+}
+
+.button_action{
+    margin-top:4px;
+}
+
+.delete_account__text {
+    font-size: 12px;
+    color: #333;
+}

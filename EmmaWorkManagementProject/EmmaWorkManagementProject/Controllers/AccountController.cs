@@ -90,13 +90,38 @@ namespace EmmaWorkManagementProject.Controllers
             return View(account);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdatePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePassword(AccountUpdateViewModel model)
+        {
+            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            try
+            {
+                if (activeAccount is null)
+                {
+                    RedirectToAction("Error");
+                }
+                activeAccount.Password = model.Password;
+                _applicationDbContext.SaveChanges();
+
+                return RedirectToAction("GetUserProfile", "UserProfile");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-
-
 
         private async Task Authenticate(string userEmail, string userFullName)
         {
