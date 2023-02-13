@@ -70,8 +70,8 @@
                             <div class="image_button_container">
                                 <div class="upper"></div>
                                 <div class="button_action">
-                                    <button class="btn btn-light image_upload_button">
-                                        <a class="upload_action" asp-area="" asp-controller="#" asp-action="#">Upload photo</a>
+                                    <button type="button" class="btn btn-light getInfoAction image_upload_button" onclick="openModal({url: '/UserProfile/UpdateProfileAvatar', data: '@Model.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                        Upload photo
                                     </button>
                                 </div>
                                 <div class="button_laber_text">Pick your new photo up</div>
@@ -117,7 +117,7 @@
                         <div class="delete_account__text">This will immediately delete all of your data including tasks, projects, comments, and more. This can’t be undone.</div>
                         <div class="button_action">
                             <button class="btn btn-light image_upload_button">
-                                <a class="upload_action text-danger" asp-area="" asp-controller="Account" asp-action="UpdatePassword">Delete account</a>
+                                <a class="upload_action text-danger" asp-area="" asp-controller="Account" asp-action="Delete">Delete account</a>
                             </button>
                         </div>
                     </div>

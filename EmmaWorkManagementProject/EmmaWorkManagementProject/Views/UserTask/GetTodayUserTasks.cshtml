@@ -60,19 +60,19 @@
                                 <div class="checkbox_input col-md-1">
                                     @if (userTask.Priority == "High")
                                     {
-                                        <a asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
+                                        <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
                                             <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger">
                                         </a>
                                     }
                                     else if (userTask.Priority == "Medium")
                                     {
-                                        <a asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
+                                        <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
                                             <input type="checkbox" id="todo" name="todo" value="todo" class="border-warning bg-warning">
                                         </a>
                                     }
                                     else
                                     {
-                                        <a asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
+                                        <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
                                             <input type="checkbox" id="todo" name="todo" value="todo" class="border-success bg-success">
                                         </a>
                                     }
@@ -83,6 +83,32 @@
                                             <div class="wrapper_container row">
                                                 <div class="task_name col">@userTask.Name</div>
                                                 <div class="task_summary">@userTask.Summary</div>
+                                            </div>
+                                            <div class="wrapper_info">
+                                                <div class="wrapper_info__container">
+                                                    <div class="wrapper_info__content">
+                                                        <button type="button" class="btn getInfoAction" onclick="openModal({url: '/UserTask/GetUserTask', data: '@userTask.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="wrapper_info__content">
+                                                        <a class="getInfoAction" asp-controller="UserTask" asp-action="GetUserTask" asp-route-userTaskId="@userTask.Id">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                    <div class="wrapper_info__content">
+                                                        <a class="getInfoAction" asp-controller="UserTask" asp-action="GetUserTask" asp-route-userTaskId="@userTask.Id">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="task_list_item__dateInfoContainer col">

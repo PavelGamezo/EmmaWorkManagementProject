@@ -68,6 +68,26 @@
         </nav>
     </header>
     
+    <!--Modal-->
+    <div class="modal fade" id="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Заголовок модального окна</h5>
+                    <button type="button" class="btn btn-light modal_button" data-bs-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="color: #333;" width="20" height="20" fill="currentColor" class="navbarAddActionImage bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal-->
+
     <div class="content">
         <main role="main" class="pb-3">
             <div class="menu">
@@ -87,6 +107,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/modal.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

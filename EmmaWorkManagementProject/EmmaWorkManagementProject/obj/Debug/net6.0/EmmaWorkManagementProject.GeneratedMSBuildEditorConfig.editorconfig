@@ -71,6 +71,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclByb2ZpbGVcVXBkYXRlQWNjb3VudE5hbWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserProfile/UpdateProfileAvatar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclByb2ZpbGVcVXBkYXRlUHJvZmlsZUF2YXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserTask/AddUserTask.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclRhc2tcQWRkVXNlclRhc2suY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -83,12 +87,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclRhc2tcR2V0T3ZlcmR1ZVVzZXJUYXNrcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserTask/GetSortedUserTasksByPriority.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclRhc2tcR2V0U29ydGVkVXNlclRhc2tzQnlQcmlvcml0eS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserTask/GetTodayUserTasks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclRhc2tcR2V0VG9kYXlVc2VyVGFza3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserTask/GetUpcomingUserTasks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclRhc2tcR2V0VXBjb21pbmdVc2VyVGFza3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserTask/GetUserTask.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclRhc2tcR2V0VXNlclRhc2suY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Программирование/TeachMeSkills/Проект/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/EmmaWorkManagementProject/Views/UserTask/GetUserTasksByName.cshtml]

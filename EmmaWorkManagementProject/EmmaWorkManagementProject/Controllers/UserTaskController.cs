@@ -23,6 +23,31 @@ namespace EmmaWorkManagementProject.Controllers
             _applicationDbContext = applicationDbContext;
         }
 
+        public async Task<IActionResult> GetSortedUserTasksByPriority()
+        {
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
+            var activeAccountId = activeAccount.Id;
+            var response = await _userTaskService.GetSortedUserTasksByPriority(activeAccountId);
+            try
+            {
+                var result = response.Select(q => new UserTaskViewModel
+                {
+                    Id = q.Id,
+                    Name = q.Name,
+                    Summary = q.Summary,
+                    DateOfCreation = q.DateOfCreation,
+                    DateOfCompletion = q.DateOfCompletion,
+                    Priority = q.Priority,
+                }).ToArray();
+
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error");
+            }
+        }
+
         public async Task<IActionResult> GetTodayUserTasks()
         {
             var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
@@ -152,6 +177,26 @@ namespace EmmaWorkManagementProject.Controllers
             {
                 return RedirectToAction("Error");
             }
+        }
+
+        public async Task<IActionResult> GetUserTask(int id, bool isJson)
+        {
+            var userTask = _userTaskService.GetUserTask(id).Result;
+            var response = new UserTaskViewModel()
+            {
+                Name = userTask.Name,
+                Summary = userTask.Summary,
+                DateOfCreation = userTask.DateOfCreation,
+                DateOfCompletion = userTask.DateOfCompletion,
+                Priority = userTask.Priority
+            };
+
+            if (isJson)
+            {
+                return Json(response);
+            }
+
+            return PartialView("GetUserTask", response);
         }
 
         [HttpGet]

@@ -135,5 +135,12 @@ namespace EmmaWorkManagementProject.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
+
+        public async Task<IActionResult> Delete()
+        {
+            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            await _accountService.DeleteAccount(activeAccount.Id);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

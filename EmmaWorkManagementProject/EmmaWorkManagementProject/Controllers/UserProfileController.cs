@@ -1,5 +1,6 @@
 ﻿using EmmaWorkManagement.BusinessLayer.Dtos;
 using EmmaWorkManagement.BusinessLayer.Interfaces;
+using EmmaWorkManagement.BusinessLayer.Services.UserTasks;
 using EmmaWorkManagement.Data;
 using EmmaWorkManagement.Entities;
 using EmmaWorkManagement.Exceptions;
@@ -43,7 +44,7 @@ namespace EmmaWorkManagementProject.Controllers
                     Registered = activeProfile.Registered,
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -51,7 +52,7 @@ namespace EmmaWorkManagementProject.Controllers
 
         [HttpPost]
         public async Task<IActionResult> GetUserProfile(UserProfileViewModel profile)
-        { 
+        {
             var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
             try
             {
@@ -196,6 +197,20 @@ namespace EmmaWorkManagementProject.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateProfileAvatar(int id, bool isJson)
+        {
+            return PartialView("UpdateProfileAvatar");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfileAvatar()
+        {
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
+            var activeProfile = await _profileService.GetUserProfile(activeAccount.Id);
+
         }
     }
 }

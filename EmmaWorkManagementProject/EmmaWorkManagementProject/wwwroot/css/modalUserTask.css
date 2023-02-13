@@ -1,0 +1,112 @@
+﻿a {
+    color: black;
+}
+
+a:hover{
+    color: rgba(1, 1, 1, 0.5);
+}
+
+.main_container {
+    min-height: 500px;
+}
+
+.form_container {
+    min-height: 500px;
+}
+
+.container_content {
+    min-height: 500px;
+}
+
+.section_container {
+    margin: auto;
+    width: 90%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.container_content {
+    --bs-gutter-x: 0;
+}
+
+.modal-body{
+    padding:0;
+}
+
+.action_subtask_add {
+    margin-bottom: 1rem;
+}
+
+.action_subtask_add__container {
+    border-bottom: 1px solid #e2e2e2;
+    margin: 10px 1rem;
+}
+
+.add_button {
+    margin-bottom: 8px;
+    font-size: 12px;
+    display: flex;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.add_button:hover {
+    background-color: #e2e2e2;
+    border-color: #e2e2e2;
+}
+
+.action_add_text {
+    padding-left: 8px;
+}
+
+.content_sidebar {
+    padding-top: 1rem;
+    background-color: #f1f1f1;
+}
+
+.sidebar_container__content {
+    padding-left: 1rem;
+    gap: 1rem;
+}
+
+.checkbox_input{
+    margin: 0;
+}
+
+.comment_form {
+    border-radius: 1rem;
+}
+
+.select_box_button {
+    background-color: #f1f1f1;
+    border: 1px solid #f1f1f1;
+}
+
+.comment_form {
+    height: 38px;
+    resize: none;
+    color: gray;
+    font-size: 12px;
+}
+
+.comment_form:hover{
+    transition: all .25s;
+    border-color: #333;
+    color: #333;
+}
+
+.comment_form:focus {
+    height: 50px;
+    color: #333;
+    resize: none
+}
+
+.item_text {
+    color: gray;
+    font-size: 0.8rem;
+}
+
+.item_content {
+    padding-top: 0.3rem;
+}
+

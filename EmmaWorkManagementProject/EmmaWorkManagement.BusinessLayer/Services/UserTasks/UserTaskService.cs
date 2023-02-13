@@ -31,30 +31,15 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
 
         #region IUserTaskService Members
 
-        /*
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByPriority()
+
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByPriority(int activeAccountId)
         {
-            return await _userTaskRepository.Select()
-                                            .Where(q => q.Summary.Contains(summary))
+            return await _userTaskRepository.GetAll()
+                                            .Where(q=>q.AccountId == activeAccountId)
+                                            .OrderByDescending(x => x.Priority)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         }
-        
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByDateOfCompletion()
-        {
-
-        }
-
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByAlphabet()
-        {
-
-        }
-        
-        public async Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByDateOfCreation()
-        {
-
-        }
-        */
 
         public async Task<IReadOnlyCollection<UserTaskDto>> GetTodayUserTasksAsync(int activeAccountId)
         {
@@ -117,6 +102,13 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
 
             return await _userTaskRepository.GetAllByInclude().Where(q=>q.)
         }*/
+
+        public async Task<UserTaskDto> GetUserTask(int userTaskId)
+        {
+            var userTask = await _userTaskRepository.GetById(userTaskId);
+            var mappingUserTask = _mapper.Map<UserTaskDto>(userTask);
+            return mappingUserTask;
+        }
 
         public async Task DeleteUserTask(int id)
         {

@@ -19,7 +19,11 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
 
         Task<IReadOnlyCollection<UserTaskDto>> GetOverdueUserTasksAsync(int activeAccountId);
 
+        Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByPriority(int activeAccountId);
+
         Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(int activeAccountId, string name);
+
+        Task<UserTaskDto> GetUserTask(int userTaskId);
 
         //Task<IReadOnlyCollection<UserTaskDto>> GetAllByInclude();
 

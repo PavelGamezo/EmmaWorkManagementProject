@@ -2,10 +2,10 @@
 let menu = document.querySelector('.menu');
 
 menuBtn.addEventListener('click', function () {
-	menuBtn.classList.toggle('active');
-	menu.classList.toggle('active');
-})
+    menuBtn.classList.toggle('active');
+    menu.classList.toggle('active');
+});
 
-$('#myModal').on('shown.bs.modal', function () {
-	$('#myInput').trigger('focus')
+('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
 })

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5Jbj+R3vBw11+pDcgBSPk29DwxOKZoI1SOs8rHaUh9Q=",
+  "Hash": "7TVcEi3EU3Lbs0T8RrZybg7oLn+vKpEf7jA35tOqM/k=",
   "Source": "EmmaWorkManagementProject",
   "BasePath": "_content/EmmaWorkManagementProject",
   "Mode": "Default",
@@ -85,6 +85,23 @@
       "OriginalItemSpec": "wwwroot\\css\\AddStyle.css"
     },
     {
+      "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\css\\modalUserTask.css",
+      "SourceId": "EmmaWorkManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\",
+      "BasePath": "_content/EmmaWorkManagementProject",
+      "RelativePath": "css/modalUserTask.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\modalUserTask.css"
+    },
+    {
       "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\css\\site.css",
       "SourceId": "EmmaWorkManagementProject",
       "SourceType": "Discovered",
@@ -134,6 +151,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\js\\modal.js",
+      "SourceId": "EmmaWorkManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\",
+      "BasePath": "_content/EmmaWorkManagementProject",
+      "RelativePath": "js/modal.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\modal.js"
     },
     {
       "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\js\\site.js",
