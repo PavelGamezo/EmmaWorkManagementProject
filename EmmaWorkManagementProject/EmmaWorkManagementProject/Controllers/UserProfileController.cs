@@ -6,6 +6,7 @@ using EmmaWorkManagement.Entities;
 using EmmaWorkManagement.Exceptions;
 using EmmaWorkManagementProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace EmmaWorkManagementProject.Controllers
 {
@@ -25,7 +26,7 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserProfile()
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             try
             {
                 if (activeAccount is null)
@@ -33,7 +34,7 @@ namespace EmmaWorkManagementProject.Controllers
                     RedirectToAction("Error");
                 }
                 var activeAccountId = activeAccount.Id;
-                var activeProfile = _profileService.GetUserProfile(activeAccountId).Result;
+                var activeProfile = await _profileService.GetUserProfile(activeAccountId);
                 return View(new UserProfileViewModel()
                 {
                     Id = activeProfile.Id,
@@ -42,6 +43,7 @@ namespace EmmaWorkManagementProject.Controllers
                     About = activeProfile.About,
                     Email = activeProfile.Email,
                     Registered = activeProfile.Registered,
+                    Image = activeProfile.Avatar
                 });
             }
             catch (Exception ex)
@@ -53,7 +55,7 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpPost]
         public async Task<IActionResult> GetUserProfile(UserProfileViewModel profile)
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             try
             {
                 if (activeAccount is null)
@@ -61,7 +63,7 @@ namespace EmmaWorkManagementProject.Controllers
                     RedirectToAction("Error");
                 }
                 var activeAccountId = activeAccount.Id;
-                var activeProfile = _profileService.GetUserProfile(activeAccountId).Result;
+                var activeProfile = await _profileService.GetUserProfile(activeAccountId);
 
                 activeAccount.UserProfile = new EmmaWorkManagement.Entities.Entities.UserProfile()
                 {
@@ -122,7 +124,8 @@ namespace EmmaWorkManagementProject.Controllers
                     Registered = activeProfile.Registered,
                     Email = activeProfile.Email,
                     Account = activeAccount,
-                    AccountId = activeAccount.Id
+                    AccountId = activeAccount.Id,
+                    Avatar = activeProfile.Avatar
                 };
 
                 _context.SaveChanges();
@@ -180,7 +183,7 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpGet]
         public async Task UpdatePassword(AccountUpdateViewModel model)
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             try
             {
                 if (activeAccount is null)
@@ -190,7 +193,7 @@ namespace EmmaWorkManagementProject.Controllers
                 activeAccount.Password = model.Password;
                 _context.SaveChanges();
 
-                var activeProfile = _profileService.GetUserProfile(activeAccount.Id).Result;
+                var activeProfile = await _profileService.GetUserProfile(activeAccount.Id);
                 RedirectToAction("GetUserProfile");
             }
             catch
@@ -200,17 +203,30 @@ namespace EmmaWorkManagementProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdateProfileAvatar(int id, bool isJson)
+        public async Task<IActionResult> UpdateProfileAvatar()
         {
-            return PartialView("UpdateProfileAvatar");
+            return View("UpdateProfileAvatar");
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProfileAvatar()
+        public async Task<IActionResult> UpdateProfileAvatar(UserProfileViewModel profile)
         {
             var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             var activeProfile = await _profileService.GetUserProfile(activeAccount.Id);
 
+            if (profile.Avatar is not null)
+            {
+                byte[] imageData = null;
+                using (var binaryReader = new BinaryReader(profile.Avatar.OpenReadStream()))
+                {
+                    imageData = binaryReader.ReadBytes((int)profile.Avatar.Length);
+                }
+                activeProfile.Avatar = imageData;
+            }
+
+            await _accountService.UpdateAccount(activeProfile);
+
+            return RedirectToAction("GetUserProfile", "UserProfile");
         }
     }
 }

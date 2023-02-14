@@ -1,11 +1,31 @@
 ﻿@model UserProfileViewModel
 
-<form method="post">
+<form asp-action="UpdateProfileAvatar" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
     <p>
         <label>Аватар</label>
-        <input name="avatar" type="file" class="form-control" />
+        <input name="Avatar" type="file" class="form-control" />
     </p>
     <p>
         <input type="submit" value="Добавить" />
     </p>
 </form>
+<script>
+    $('#carTypeId').select2({
+        allowClear: true,
+        ajax: {
+            type: "POST",
+            url: "@Url.Action("GetTypes", "Car")",
+            dataType: "json",
+            processResults: function (result) {
+                return {
+                    results: $.map(result, function (val, index) {
+                        return {
+                            id: index,
+                            text: val
+                        };
+                    }),
+                };
+            }
+        }
+    });
+</script>

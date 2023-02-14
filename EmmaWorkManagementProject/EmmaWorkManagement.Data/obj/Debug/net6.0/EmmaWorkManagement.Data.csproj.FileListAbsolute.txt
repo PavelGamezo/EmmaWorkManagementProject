@@ -15,3 +15,5 @@ D:\Программирование\TeachMeSkills\Проект\EmmaWorkManagemen
 D:\Программирование\TeachMeSkills\Проект\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagement.Data\obj\Debug\net6.0\refint\EmmaWorkManagement.Data.dll
 D:\Программирование\TeachMeSkills\Проект\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagement.Data\obj\Debug\net6.0\EmmaWorkManagement.Data.pdb
 D:\Программирование\TeachMeSkills\Проект\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagement.Data\obj\Debug\net6.0\ref\EmmaWorkManagement.Data.dll
+D:\Программирование\TeachMeSkills\Проект\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagement.Data\bin\Debug\net6.0\EmmaWorkManagement.Data.runtimeconfig.json
+D:\Программирование\TeachMeSkills\Проект\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagementProject\EmmaWorkManagement.Data\obj\Debug\net6.0\EmmaWorkManagement.Data.genruntimeconfig.cache

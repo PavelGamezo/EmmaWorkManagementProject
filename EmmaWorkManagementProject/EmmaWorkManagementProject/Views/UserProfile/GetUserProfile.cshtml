@@ -44,7 +44,7 @@
                             <h1 class="header_sidebar__text">Account</h1>
                         </div>
                         <div class="sidebarAccount_button">
-                            <a class="navbarAddAction text-light" asp-area="" asp-controller="UserTask" asp-action="GetTodayUserTasks">
+                            <a class="navbarAddAction text-light" asp-controller="UserTask" asp-action="GetTodayUserTasks">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="color: #333;" width="20" height="20" fill="currentColor" class="navbarAddActionImage bi bi-plus-lg" viewBox="0 0 16 16">
                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                                 </svg>
@@ -65,7 +65,14 @@
                         <h3 class="image_info_text">Photo</h3>
                         <div class="image_info_container">
                             <div class="image_photo_container">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar" style="width: 80px;" />
+                                @if(Model.Image != null)
+                                {
+                                    <img style='width:80px; height:80px; border-radius: 3rem;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Image))" />
+                                }
+                                else
+                                {
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar" style="width: 80px;" />
+                                }
                             </div>
                             <div class="image_button_container">
                                 <div class="upper"></div>

@@ -74,6 +74,25 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
             account.Surname = userProfile.Surname;
             await _accountRepository.Save();
         }
+
+        public async Task UpdateAccount(UserProfileDto activeProfile)
+        {
+            var activeAccount = _accountRepository.GetAll().FirstOrDefault(q => q.Id == activeProfile.Id);
+            activeAccount.UserProfile = new UserProfile()
+            {
+                Id = activeProfile.Id,
+                About = activeProfile.About,
+                Name = activeProfile.Name,
+                Surname = activeProfile.Surname,
+                Registered = activeProfile.Registered,
+                Email = activeProfile.Email,
+                Account = activeAccount,
+                AccountId = activeAccount.Id,
+                Avatar = activeProfile.Avatar
+            };
+
+            await _accountRepository.Save();
+        }
         #endregion
     }
 }

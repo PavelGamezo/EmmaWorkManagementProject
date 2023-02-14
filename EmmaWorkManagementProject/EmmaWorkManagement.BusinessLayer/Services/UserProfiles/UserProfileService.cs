@@ -32,7 +32,7 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserProfiles
         public async Task UpdateUserProfile(UserProfileDto activeProfile)
         {
             var mappedActiveProfile = _mapper.Map<UserProfile>(activeProfile);
-            await _userProfileRepository.Save();
+            _userProfileRepository.Save();
         }
     }
 }

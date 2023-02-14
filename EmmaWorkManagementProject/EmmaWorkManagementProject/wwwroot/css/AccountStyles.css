@@ -109,6 +109,7 @@ a:hover {
 
 .image_upload_button {
     color: #333;
+    padding: 0.4rem;
 }
 
 .image_upload_button:hover {
@@ -138,8 +139,4 @@ a:hover {
 .delete_account__text {
     font-size: 12px;
     color: #333;
-}
-
-.button_action {
-    margin-bottom: 1rem;
 }

@@ -20,6 +20,7 @@ namespace EmmaWorkManagement.Data.Configurations
             builder.Property(q => q.Email).IsRequired().HasMaxLength(50);
             builder.Property(q => q.About).IsRequired();
             builder.Property(q => q.Registered).IsRequired();
+            builder.Property(q => q.Avatar).HasColumnName("Avatar");
         }
     }
 }
