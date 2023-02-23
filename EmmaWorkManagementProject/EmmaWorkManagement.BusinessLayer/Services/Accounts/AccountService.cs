@@ -7,6 +7,7 @@ using EmmaWorkManagement.Data.Repositories;
 using EmmaWorkManagement.Entities;
 using EmmaWorkManagement.Entities.Entities;
 using EmmaWorkManagementProject.Database.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,16 +64,9 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
 
         public async Task<Account> GetAccountByEmail(string email)
         {
-            var account = _accountRepository.GetAll().FirstOrDefault(q => q.Email == email);
+            var account = _accountRepository.GetAll()
+                                            .FirstOrDefault(q => q.Email == email);
             return account;
-        }
-
-        public async Task UpdateAccountByProfile(UserProfileDto userProfile)
-        {
-            var account = _accountRepository.GetAll().FirstOrDefault(q => q.Id == userProfile.Id);
-            account.Name = userProfile.Name;
-            account.Surname = userProfile.Surname;
-            await _accountRepository.Save();
         }
 
         public async Task UpdateAccount(UserProfileDto activeProfile)
@@ -92,6 +86,48 @@ namespace EmmaWorkManagement.BusinessLayer.Services.Accounts
             };
 
             await _accountRepository.Save();
+        }
+
+        public async Task UpdateAccountByProfile(UserProfileDto userProfile)
+        {
+            var account = _accountRepository.GetAll().FirstOrDefault(q => q.Id == userProfile.Id);
+            account.Name = userProfile.Name;
+            account.Surname = userProfile.Surname;
+            await _accountRepository.Save();
+        }
+
+        public async Task UpdateAccountName(AccountDto accountDto)
+        {
+            var activeAccount = await _accountRepository.GetById(accountDto.Id);
+            activeAccount.Name = accountDto.Name;
+            activeAccount.Surname = accountDto.Surname;
+
+            await _accountRepository.Save();
+        }
+
+        public async Task UpdateAccountEmail(AccountDto accountDto)
+        {
+            var activeAccount = await _accountRepository.GetById(accountDto.Id);
+            activeAccount.Email = accountDto.Email;
+
+            await _accountRepository.Save();
+        }
+
+        public async Task UpdateAccountPassword(AccountDto accountDto)
+        {
+            var activeAccount = await _accountRepository.GetById(accountDto.Id);
+            activeAccount.Password = accountDto.Password;
+
+            await _accountRepository.Save();
+        }
+
+        public async Task<AccountDto> GetAccountByEmailAsync(string email)
+        {
+            var account = _accountRepository.GetAll()
+                                            .Where(q=>q.Email == email)
+                                            .FirstOrDefault();
+            var mappedAccount = _mapper.Map<AccountDto>(account);
+            return mappedAccount;
         }
         #endregion
     }

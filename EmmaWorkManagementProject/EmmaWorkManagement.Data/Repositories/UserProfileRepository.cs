@@ -1,6 +1,7 @@
 ﻿using EmmaWorkManagement.Data.Interaces;
 using EmmaWorkManagement.Entities;
 using EmmaWorkManagement.Entities.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,12 +31,12 @@ namespace EmmaWorkManagement.Data.Repositories
 
         public IQueryable<UserProfile> GetAll()
         {
-            return _applicationDbContext.UserProfiles.AsQueryable();
+            return _applicationDbContext.UserProfiles.Include(q=>q.Account).AsQueryable();
         }
 
         public async Task<UserProfile> GetById(int id)
         {
-            return await _applicationDbContext.UserProfiles.FindAsync(id);
+            return await _applicationDbContext.UserProfiles.Include(q => q.Account).FirstOrDefaultAsync(q => q.Id == id);
         }
 
         public Task Save()

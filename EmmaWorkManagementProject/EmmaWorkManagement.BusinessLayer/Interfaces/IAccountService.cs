@@ -18,7 +18,13 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
 
         Task<Account> GetAccountByEmail(string email);
 
-        Task UpdateAccountByProfile(UserProfileDto userProfile);
+        Task<AccountDto> GetAccountByEmailAsync(string email);
+
+        Task UpdateAccountPassword(AccountDto accountDto);
+
+        Task UpdateAccountName(AccountDto accountDto);
+
+        Task UpdateAccountEmail(AccountDto accountDto);
 
         Task UpdateAccount(UserProfileDto activeProfile);
     }

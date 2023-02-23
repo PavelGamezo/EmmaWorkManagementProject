@@ -89,8 +89,8 @@
                         <h3 class="image_info_text">Name</h3>
                         <div>@Model.Name @Model.Surname</div>
                         <div class="button_action">
-                            <button class="btn btn-light image_upload_button">
-                                <a class="upload_action" asp-area="" asp-controller="UserProfile" asp-action="UpdateAccountName">Change name</a>
+                            <button type="button" class="btn btn-light getInfoAction image_upload_button" onclick="openModal({url: '/UserProfile/UpdateAccountName', data: '@Model.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                Change name
                             </button>
                         </div>
                     </div>

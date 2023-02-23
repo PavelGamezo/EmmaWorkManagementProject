@@ -20,6 +20,7 @@ namespace EmmaWorkManagement.Data.Extensions
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserTaskRepository, UserTaskRepository>();
+            services.AddScoped<ISubtaskRepository, SubtaskRepository>();
 
             return services;
         }

@@ -1,4 +1,5 @@
-﻿using EmmaWorkManagement.BusinessLayer.Dtos;
+﻿using AutoMapper;
+using EmmaWorkManagement.BusinessLayer.Dtos;
 using EmmaWorkManagement.BusinessLayer.Interfaces;
 using EmmaWorkManagement.BusinessLayer.Services.UserTasks;
 using EmmaWorkManagement.Data;
@@ -14,27 +15,29 @@ namespace EmmaWorkManagementProject.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IUserProfileService _profileService;
-        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserProfileController(IAccountService accountService, IUserProfileService userProfileService, ApplicationDbContext context)
+        public UserProfileController(IAccountService accountService, IUserProfileService userProfileService, IMapper mapper)
         {
             _accountService = accountService;
             _profileService = userProfileService;
-            _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUserProfile()
         {
+            var account = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             try
             {
-                if (activeAccount is null)
+                if (account is null)
                 {
-                    RedirectToAction("Error");
+                    throw new ObjectNotFoundException("Account");
                 }
-                var activeAccountId = activeAccount.Id;
-                var activeProfile = await _profileService.GetUserProfile(activeAccountId);
+                var accountId = activeAccount.Id;
+                var activeProfile = await _profileService.GetUserProfile(accountId);
+
                 return View(new UserProfileViewModel()
                 {
                     Id = activeProfile.Id,
@@ -45,6 +48,10 @@ namespace EmmaWorkManagementProject.Controllers
                     Registered = activeProfile.Registered,
                     Image = activeProfile.Avatar
                 });
+            }
+            catch (ObjectNotFoundException notFoundException)
+            {
+                return RedirectToAction("Error", notFoundException);
             }
             catch (Exception ex)
             {
@@ -60,38 +67,24 @@ namespace EmmaWorkManagementProject.Controllers
             {
                 if (activeAccount is null)
                 {
-                    RedirectToAction("Error");
+                    throw new ObjectNotFoundException(profile.Name);
                 }
+
                 var activeAccountId = activeAccount.Id;
                 var activeProfile = await _profileService.GetUserProfile(activeAccountId);
+                activeProfile.About = profile.About;
 
-                activeAccount.UserProfile = new EmmaWorkManagement.Entities.Entities.UserProfile()
-                {
-                    Id = activeProfile.Id,
-                    About = profile.About,
-                    Name = activeProfile.Name,
-                    Surname = activeProfile.Surname,
-                    Registered = activeProfile.Registered,
-                    Email = activeProfile.Email,
-                    Account = activeAccount,
-                    AccountId = activeAccount.Id
-                };
+                await _profileService.UpdateUserProfile(activeProfile);
 
-                _context.SaveChanges();
-
-                return View(new UserProfileViewModel()
-                {
-                    Id = activeProfile.Id,
-                    About = profile.About,
-                    Name = profile.Name,
-                    Surname = profile.Surname,
-                    Registered = activeProfile.Registered,
-                    Email = activeProfile.Email,
-                });
+                return RedirectToAction("GetUserProfile");
+            }
+            catch (ObjectNotFoundException notFoundException)
+            {
+                return RedirectToAction("Error", notFoundException);
             }
             catch (Exception ex)
             {
-                throw;
+                return RedirectToAction("Error", ex);
             }
         }
 
@@ -101,40 +94,35 @@ namespace EmmaWorkManagementProject.Controllers
             return View();
         }
 
-        public async Task<IActionResult> UpdateAccountName(UserProfileViewModel profile)
+        public async Task<IActionResult> UpdateAccountName(UserProfileViewModel model)
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                if (activeAccount is null)
+                if (accountDto is null)
                 {
-                    RedirectToAction("Error");
+                    throw new ObjectNotFoundException(model.Name);
                 }
-                var activeAccountId = activeAccount.Id;
-                var activeProfile = _profileService.GetUserProfile(activeAccountId).Result;
 
-                activeAccount.Name = profile.Name;
-                activeAccount.Surname = profile.Surname;
-                activeAccount.UserProfile = new EmmaWorkManagement.Entities.Entities.UserProfile()
-                {
-                    Id = activeProfile.Id,
-                    About = activeProfile.About,
-                    Name = profile.Name,
-                    Surname = profile.Surname,
-                    Registered = activeProfile.Registered,
-                    Email = activeProfile.Email,
-                    Account = activeAccount,
-                    AccountId = activeAccount.Id,
-                    Avatar = activeProfile.Avatar
-                };
+                var activeAccountId = accountDto.Id;
+                var profileDto = await _profileService.GetUserProfile(activeAccountId);
+                profileDto.Name = model.Name;
+                profileDto.Surname = model.Surname;
+                accountDto.Name = model.Name;
+                accountDto.Surname = model.Surname;
 
-                _context.SaveChanges();
+                await _accountService.UpdateAccountName(accountDto);
+                await _profileService.UpdateUserProfile(profileDto);
 
                 return RedirectToAction("GetUserProfile");
             }
+            catch (ObjectNotFoundException notFoundException)
+            {
+                return RedirectToAction("Error", notFoundException);
+            }
             catch (Exception ex)
             {
-                throw;
+                return RedirectToAction("Error", ex);
             }
         }
 
@@ -145,86 +133,59 @@ namespace EmmaWorkManagementProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateAccountEmail(UserProfileViewModel profile)
+        public async Task<IActionResult> UpdateAccountEmail(UserProfileViewModel model)
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                if (activeAccount is null)
+                if (accountDto is null)
                 {
-                    RedirectToAction("Error");
+                    throw new ObjectNotFoundException(model.Name);
                 }
-                var activeAccountId = activeAccount.Id;
-                var activeProfile = _profileService.GetUserProfile(activeAccountId).Result;
 
-                activeAccount.Email = profile.Email;
-                activeAccount.UserProfile = new EmmaWorkManagement.Entities.Entities.UserProfile()
-                {
-                    Id = activeProfile.Id,
-                    About = activeProfile.About,
-                    Name = activeProfile.Name,
-                    Surname = activeProfile.Surname,
-                    Registered = activeProfile.Registered,
-                    Email = profile.Email,
-                    Account = activeAccount,
-                    AccountId = activeAccount.Id
-                };
+                var activeAccountId = accountDto.Id;
+                var profileDto = await _profileService.GetUserProfile(activeAccountId);
+                profileDto.Email = model.Email;
+                accountDto.Email = model.Email;
 
-                _context.SaveChanges();
+                await _accountService.UpdateAccountName(accountDto);
+                await _profileService.UpdateUserProfile(profileDto);
 
                 return RedirectToAction("GetUserProfile");
             }
+            catch (ObjectNotFoundException notFoundException)
+            {
+                return RedirectToAction("Error", notFoundException);
+            }
             catch (Exception ex)
             {
-                throw;
-            }
-        }
-
-        [HttpGet]
-        public async Task UpdatePassword(AccountUpdateViewModel model)
-        {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-            try
-            {
-                if (activeAccount is null)
-                {
-                    RedirectToAction("Error");
-                }
-                activeAccount.Password = model.Password;
-                _context.SaveChanges();
-
-                var activeProfile = await _profileService.GetUserProfile(activeAccount.Id);
-                RedirectToAction("GetUserProfile");
-            }
-            catch
-            {
-                throw;
+                return RedirectToAction("Error", ex);
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> UpdateProfileAvatar()
         {
-            return View("UpdateProfileAvatar");
+            return PartialView("UpdateProfileAvatar");
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProfileAvatar(UserProfileViewModel profile)
+        public async Task<IActionResult> UpdateProfileAvatar(UserProfileViewModel model)
         {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-            var activeProfile = await _profileService.GetUserProfile(activeAccount.Id);
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
+            var profileDto = await _profileService.GetUserProfile(accountDto.Id);
 
-            if (profile.Avatar is not null)
+            if (model.Avatar is not null)
             {
                 byte[] imageData = null;
-                using (var binaryReader = new BinaryReader(profile.Avatar.OpenReadStream()))
+                using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
                 {
-                    imageData = binaryReader.ReadBytes((int)profile.Avatar.Length);
+                    imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
                 }
-                activeProfile.Avatar = imageData;
+                profileDto.Avatar = imageData;
             }
 
-            await _accountService.UpdateAccount(activeProfile);
+            await _accountService.UpdateAccount(profileDto);
 
             return RedirectToAction("GetUserProfile", "UserProfile");
         }

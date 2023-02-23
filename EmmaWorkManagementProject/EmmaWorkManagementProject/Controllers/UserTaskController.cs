@@ -181,28 +181,28 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetUserTask(int id, bool isJson)
         {
-            var userTask = _userTaskService.GetUserTask(id).Result;
+            var userTask = await _userTaskService.GetUserTask(id);
             var response = new UserTaskViewModel()
             {
+                Id = userTask.Id,
                 Name = userTask.Name,
                 Summary = userTask.Summary,
                 DateOfCreation = userTask.DateOfCreation,
                 DateOfCompletion = userTask.DateOfCompletion,
-                Priority = userTask.Priority
+                Priority = userTask.Priority,
             };
 
             if (isJson)
             {
                 return Json(response);
             }
-
-            return PartialView("GetUserTask", response);
+            return View(response);
         }
 
         [HttpGet]
         public async Task<IActionResult> AddUserTask()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -232,12 +232,54 @@ namespace EmmaWorkManagementProject.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateUserTask(int id)
+        {
+            var userTask = await _userTaskService.GetUserTask(id);
+            var model = new UserTaskViewModel()
+            {
+                Id = userTask.Id,
+                Name = userTask.Name,
+                Summary = userTask.Summary,
+                DateOfCompletion = userTask.DateOfCompletion,
+                DateOfCreation = userTask.DateOfCreation,
+                Priority = userTask.Priority
+            };
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserTask(UserTaskViewModel enteredUserTask, int id)
+        {
+            try
+            {
+                var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
+                var userTask = await _userTaskService.GetUserTask(enteredUserTask.Id);
+                var updatedUserTask = new UserTaskDto()
+                {
+                    Name = enteredUserTask.Name,
+                    Summary = enteredUserTask.Summary,
+                    DateOfCompletion = enteredUserTask.DateOfCompletion,
+                    DateOfCreation = userTask.DateOfCreation,
+                    Priority = enteredUserTask.Priority,
+                    Id = id,
+                };
+                await _userTaskService.UpdateUserTask(updatedUserTask, activeAccount, id);
+                return RedirectToAction("GetTodayUserTasks");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<IActionResult> DeleteUserTask(int id)
         {
             try
             {
                 await _userTaskService.DeleteUserTask(id);
-                return RedirectToActionPermanent("GetTodayUserTasks");
+                return RedirectToAction("GetTodayUserTasks");
             }
             catch (Exception ex)
             {

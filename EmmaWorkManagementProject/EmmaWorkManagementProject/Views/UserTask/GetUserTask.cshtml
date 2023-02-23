@@ -1,6 +1,10 @@
 ﻿@using EmmaWorkManagement.Entities.Enums
 @model UserTaskViewModel
 
+@{
+    Layout = "";
+}
+
 <link rel="stylesheet" href="~/css/modalUserTask.css" asp-append-version="true" />
 
 <div class="main_container">
@@ -43,8 +47,13 @@
                         </div>
                     </div>
                     <div class="action_subtask_add">
+                        <div>
+                            <a class="todo_button" asp-action="GetAllSubtasks" asp-route-id="@Model.Id">
+                                <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger">
+                            </a>
+                        </div>
                         <div class="action_subtask_add__container">
-                            <button type="button" class="btn btn-light add_button">
+                            <button type="button" class="btn btn-light add_button" onclick="openModal({url: '/Subtask/CreateSubtask', data: '@Model.Id'})" data-toggle="ajax-modal" data-target="Modal">
                                 <div class="plus_icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
@@ -109,7 +118,11 @@
                         <div class="sidebar_list__item">
                             <div class="item_text">Delete</div>
                             <div class="item_content">
-                                <button type="button" class="btn btn-outline-danger">Delete task</button>
+                                <button type="button" class="btn btn-outline-danger">
+                                    <a asp-action="DeleteUserTask" asp-controller="UserTask" asp-route-id="@Model.Id">
+                                        Delete task
+                                    </a>
+                                </button>
                             </div>
                         </div>
                     </ul>

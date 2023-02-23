@@ -17,6 +17,6 @@ namespace EmmaWorkManagement.Entities
 
         public UserProfile UserProfile { get; set; }
 
-        public ICollection<UserTask> UserTasks { get; set; } = new List<UserTask>();
+        public ICollection<UserTask>? UserTasks { get; set; }
     }
 }

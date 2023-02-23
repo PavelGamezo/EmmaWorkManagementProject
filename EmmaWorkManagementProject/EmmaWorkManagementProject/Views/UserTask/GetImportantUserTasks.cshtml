@@ -3,7 +3,7 @@
 @model EmmaWorkManagementProject.Models.UserTaskViewModel[]
 
 @{
-    ViewData["Title"] = "Today";
+    ViewData["Title"] = "Important";
 }
 
 <link rel="stylesheet" href="css/font-glyphicons.css">
@@ -95,11 +95,11 @@
                                                         </button>
                                                     </div>
                                                     <div class="wrapper_info__content">
-                                                        <a class="getInfoAction" asp-controller="UserTask" asp-action="GetUserTask" asp-route-userTaskId="@userTask.Id">
+                                                        <button type="button" class="btn getInfoAction" onclick="openModal({url: '/UserTask/UpdateUserTask', data: '@userTask.Id'})" data-toggle="ajax-modal" data-target="Modal">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                                                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
                                                             </svg>
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                     <div class="wrapper_info__content">
                                                         <a class="getInfoAction" asp-controller="UserTask" asp-action="GetUserTask" asp-route-userTaskId="@userTask.Id">
@@ -159,15 +159,13 @@
                         </li>
                     }
                     <li class="controller_action">
-                        <button class="btn btn-gradient-primary btn btn-block plus_add_button" data-toggle="modal" data-target="#perevod">
-                            <a asp-controller="UserTask" asp-action="AddUserTask" class="add_button_action">
-                                <span class="icon_add">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 20 20">
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                    </svg>
-                                </span>
-                                Add Task
-                            </a>
+                        <button class="btn btn-gradient-primary btn btn-block plus_add_button" onclick="openAddModal({url: '/UserTask/AddUserTask'})" data-toggle="ajax-modal" data-target="Modal">
+                            <span class="icon_add">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 20 20">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </span>
+                            Add Task
                         </button>
                     </li>
                 </ul>
@@ -179,4 +177,3 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="js/scripts.js"></script>
-

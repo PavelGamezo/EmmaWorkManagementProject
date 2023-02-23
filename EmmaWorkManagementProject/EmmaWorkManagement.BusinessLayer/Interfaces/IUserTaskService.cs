@@ -27,6 +27,8 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
 
         //Task<IReadOnlyCollection<UserTaskDto>> GetAllByInclude();
 
+        Task UpdateUserTask(UserTaskDto userTask, Account activeAccount, int id);
+
         Task AddUserTask(UserTaskDto userTask);
 
         Task DeleteUserTask(int id);

@@ -55,6 +55,35 @@ namespace EmmaWorkManagement.Data.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("EmmaWorkManagement.Entities.Entities.Subtask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTaskId");
+
+                    b.ToTable("Subtasks");
+                });
+
             modelBuilder.Entity("EmmaWorkManagement.Entities.Entities.UserProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -71,7 +100,8 @@ namespace EmmaWorkManagement.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Avatar")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("Avatar");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -116,6 +146,9 @@ namespace EmmaWorkManagement.Data.Migrations
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -135,6 +168,17 @@ namespace EmmaWorkManagement.Data.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("UserTasks");
+                });
+
+            modelBuilder.Entity("EmmaWorkManagement.Entities.Entities.Subtask", b =>
+                {
+                    b.HasOne("EmmaWorkManagement.Entities.UserTask", "UserTask")
+                        .WithMany("Subtasks")
+                        .HasForeignKey("UserTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserTask");
                 });
 
             modelBuilder.Entity("EmmaWorkManagement.Entities.Entities.UserProfile", b =>
@@ -165,6 +209,11 @@ namespace EmmaWorkManagement.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("UserTasks");
+                });
+
+            modelBuilder.Entity("EmmaWorkManagement.Entities.UserTask", b =>
+                {
+                    b.Navigation("Subtasks");
                 });
 #pragma warning restore 612, 618
         }

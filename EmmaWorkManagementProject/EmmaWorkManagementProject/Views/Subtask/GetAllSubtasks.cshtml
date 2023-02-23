@@ -1,0 +1,39 @@
+﻿@model UserTaskViewModel
+
+@{
+    Layout = "GetUserTask";
+}
+
+<div class="list_holder">
+    <ul class="list_items">
+            <li class="task_list_item">
+                <div class="task_list_item__body row">
+                    <div class="checkbox_input col-md-1">
+                        <a class="todo_button" asp-action="DeleteSubtask" asp-controller="Subtask" asp-route-id="@Model.Id">
+                            <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger">
+                        </a>
+                    </div>
+                    <div class="label_container col-md-10">
+                        <div class="task_list_item__content row">
+                            <div class="task_list_item__content__wrapper col">
+                                <div class="wrapper_container row">
+                                    <div class="task_name col">@Model.Name</div>
+                                    <div class="task_summary">@Model.Summary</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 deleteButton">
+                        <button type="button" class="deleteButton_button btn btn-outline-danger">
+                            <a asp-controller="Subtask" asp-action="DeleteSubtask" asp-route-id="@Model.Id">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                </svg>
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </li>
+    </ul>
+</div>

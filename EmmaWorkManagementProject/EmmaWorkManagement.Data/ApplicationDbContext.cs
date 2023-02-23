@@ -19,6 +19,7 @@ namespace EmmaWorkManagement.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<UserTask> UserTasks { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Subtask> Subtasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace EmmaWorkManagement.Data
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new UserTaskConfiguration());
             modelBuilder.ApplyConfiguration(new UserProfileConfiguration());
+            modelBuilder.ApplyConfiguration(new SubtaskConfiguration());
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

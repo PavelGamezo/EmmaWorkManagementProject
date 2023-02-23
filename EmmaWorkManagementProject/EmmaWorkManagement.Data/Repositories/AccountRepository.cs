@@ -30,7 +30,9 @@ namespace EmmaWorkManagement.Data.Repositories
 
         public async Task<Account> GetById(int id)
         {
-            return await _applicationDbContext.Accounts.FindAsync(id);
+            return await _applicationDbContext.Accounts.Include(q => q.UserTasks)
+                                                       .Include(q => q.UserProfile)
+                                                       .FirstOrDefaultAsync(q => q.Id == id);
         }
 
         public Task Save()
@@ -40,7 +42,7 @@ namespace EmmaWorkManagement.Data.Repositories
 
         public IQueryable<Account> GetAll()
         {
-            return _applicationDbContext.Accounts.AsQueryable();
+            return _applicationDbContext.Accounts.Include(q=>q.UserTasks).Include(q=>q.UserProfile).AsQueryable();
         }
     }
 }
