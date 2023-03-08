@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EmmaWorkManagement.Entities.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmmaWorkManagementProject.Models
 {
@@ -25,5 +26,7 @@ namespace EmmaWorkManagementProject.Models
         [Display(Name = "Priority")]
         [Required(ErrorMessage = "Enter completion date of new task")]
         public string Priority { get; set; }
+
+        public ICollection<Subtask> Subtasks { get; set; } = null!;
     }
 }

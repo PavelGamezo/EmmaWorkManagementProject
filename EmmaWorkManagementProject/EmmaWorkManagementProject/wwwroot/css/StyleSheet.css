@@ -24,6 +24,14 @@ body {
     line-height: 1.5;
 }
 
+ul {
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
 ul li {
     list-style-type: none;
 }
@@ -32,9 +40,17 @@ ul li {
     max-width: 42em;
 }
 
-.inner{
+.content {
+    justify-content: center;
+    background-color: #fff;
+    color: black;
+    border-radius: 10px;
+    text-align: initial;
+}
+
+.inner {
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
 }
 
 .masthead{
@@ -45,8 +61,92 @@ ul li {
     margin-bottom: 0;
 }
 
-@media (min-width: 48em) {
-    .masthead-brand {
+.login_form__title {
+    font-size: 30px;
+    color: #333;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: left;
+    width: 100%;
+    display: block;
+    padding-bottom: 20px;
+}
+
+.text__label {
+    font-size: 13px;
+    color: #222;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.wrap_input {
+    margin-bottom: 20px;
+}
+
+.wrap_input__password {
+    margin-bottom: 10px;
+}
+
+.form-control {
+    color: #555;
+    line-height: 1.2;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    background: 0 0;
+    height: 55px;
+    padding: 0 25px;
+}
+
+.action_update_password__container {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 10px;
+}
+
+.action_update_password {
+    color: #333;
+    -webkit-transition: all .25s;
+}
+
+.action_update_password:hover{
+    color: gray;
+}
+
+.buttons_container {
+    display: flex;
+    justify-content: center;
+}
+
+.login_submit_button {
+    width: 50%;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    min-width: 150px;
+    height: 55px;
+    background-color: #333;
+    border-radius: 27px;
+    -webkit-transition: all .25s;
+    -o-transition: all .4s;
+    -moz-transition: all .4s;
+    transition: all .4s;
+}
+
+    .login_submit_button:hover{
+        color: gray;
+    }
+
+    @media (min-width: 48em) {
+        .masthead-brand {
         float: left;
     }
     .nav-masthead {
@@ -90,11 +190,19 @@ ul li {
 }
 
 .login{
-    margin:auto;
+    padding-left: 85px;
+    padding-right: 85px;
+    padding-top: 55px;
+    padding-bottom: 55px;
 }
 
 .btn {
     font-weight: 500;
+}
+
+.btn a{
+    color: #fff;
+    text-decoration:none
 }
 
 .btn-light, .btn-light:focus {

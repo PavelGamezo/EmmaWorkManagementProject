@@ -17,21 +17,15 @@
                             <div class="checkbox_input col-md-1">
                                 @if (Model.Priority == "High")
                                 {
-                                    <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@Model.Id">
-                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger">
-                                    </a>
+                                    <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@Model.Id'})">
                                 }
                                 else if (Model.Priority == "Medium")
                                 {
-                                    <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@Model.Id">
-                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-warning bg-warning">
-                                    </a>
+                                    <input type="checkbox" id="todo" name="todo" value="todo" class="border-warning bg-warning" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@Model.Id'})">
                                 }
                                 else
                                 {
-                                    <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@Model.Id">
-                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-success bg-success">
-                                    </a>
+                                    <input type="checkbox" id="todo" name="todo" value="todo" class="border-success bg-success" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@Model.Id'})">
                                 }
                             </div>
                             <div class="label_container col-md-10">
@@ -47,10 +41,52 @@
                         </div>
                     </div>
                     <div class="action_subtask_add">
-                        <div>
-                            <a class="todo_button" asp-action="GetAllSubtasks" asp-route-id="@Model.Id">
-                                <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger">
-                            </a>
+                        @Model.Subtasks.Select(q=>q.isActive == false).Count()/@Model.Subtasks.Count()
+                        <hr class="container_line">
+                        <div class="subtasks">
+                            @foreach (var subtask in Model.Subtasks)
+                            {
+                                <div class="task_overview">
+                                    <div class="task_list_item__body row">
+                                        <div class="checkbox_input col-md-1">
+                                            @if(subtask.isActive == true)
+                                            {
+                                                <input type="checkbox" id="checkbox_todo" name="todo" value="todo" class="subtask_checkbox" checked onclick="checkboxScript({url: '/Subtask/CompleteSubtask', data: '@subtask.Id'})">
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" id="checkbox_todo" name="todo" value="todo" class="subtask_checkbox" onclick="checkboxScript({url: '/Subtask/CompleteSubtask', data: '@subtask.Id'})">
+                                            }
+                                        </div>
+                                        <div class="label_container col-md-10">
+                                            <div class="task_list_item__content row">
+                                                <div class="task_list_item__content__wrapper col">
+                                                    <div class="wrapper_container row">
+                                                        <div class="task_name col">@subtask.Name</div>
+                                                        <div class="task_summary">@subtask.Comment</div>
+                                                    </div>
+                                                    <div class="subtask_actions_container">
+                                                        <div class="wrapper_info__content">
+                                                            <button type="button" class="btn getInfoAction" onclick="openModal({url: '/Subtask/UpdateSubtask', data: '@subtask.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <div class="wrapper_info__content">
+                                                            <button type="button" class="btn getInfoAction" onclick="checkboxScript({url: '/Subtask/DeleteSubtask', data: '@subtask.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                         <div class="action_subtask_add__container">
                             <button type="button" class="btn btn-light add_button" onclick="openModal({url: '/Subtask/CreateSubtask', data: '@Model.Id'})" data-toggle="ajax-modal" data-target="Modal">

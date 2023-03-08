@@ -1,30 +1,43 @@
-﻿@{
+﻿@model RegisterViewModel
+@{
     Layout = "_AccountLayout";
     ViewData["Title"] = "Login page";
 }
 
-<form asp-action="Register" method="post" class="register">
-    <div class="mb-3">
-        <label class="form-label">Enter your name</label>
+<form asp-action="Login" method="post" class="login">
+    <span class="login_form__title">Account Login</span>
+    <span class="text__label">Name</span>
+    <div class="wrap_input">
         <input name="Name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        @Html.ValidationMessageFor(q=>q.Name, "", new {@class = "text-danger"})
     </div>
-    <div class="mb-3">
-        <label class="form-label">Enter your surname</label>
+    <span class="text__label">Surname</span>
+    <div class="wrap_input">
         <input name="Surname" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        @Html.ValidationMessageFor(q=>q.Surname, "", new {@class = "text-danger"})
+    </div>
+    <span class="text__label">Email</span>
+    <div class="wrap_input">
+        <input name="Email" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        @Html.ValidationMessageFor(q=>q.Email, "", new {@class = "text-danger"})
     </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
+    <span class="text__label">Password</span>
+    <div class="wrap_input__password">
         <input name="Password" type="password" class="form-control" id="exampleInputPassword1">
+        @Html.ValidationMessageFor(q=>q.Password, "", new {@class = "text-danger"})
     </div>
-    <div class="mb-3">
-        <label class="form-label">Confirm your password</label>
+    <span class="text__label">Confirm your password</span>
+    <div class="wrap_input__password">
         <input name="PasswordConfirm" type="password" class="form-control" id="exampleInputPassword1">
+        @Html.ValidationMessageFor(q=>q.PasswordConfirm, "", new {@class = "text-danger"})
     </div>
-    <div class="mb-3">
-        <label class="form-label">Enter your email</label>
-        <input name="Email" type="email" class="form-control" id="exampleInputPassword1">
+    <div class="action_update_password__container">
+        <div>
+            <a asp-action="Login" asp-controller="Account" class="action_update_password">You already have an account?</a>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="buttons_container">
+        <button type="submit" class="btn login_submit_button">Submit</button>
+    </div>
 </form>

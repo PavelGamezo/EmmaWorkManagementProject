@@ -4,6 +4,7 @@ using EmmaWorkManagement.Data;
 using EmmaWorkManagement.Data.Interaces;
 using EmmaWorkManagement.Data.Interfaces;
 using EmmaWorkManagement.Entities;
+using EmmaWorkManagement.Exceptions;
 using EmmaWorkManagementProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,22 +15,24 @@ namespace EmmaWorkManagementProject.Controllers
     {
         private readonly IUserTaskService _userTaskService;
         private readonly IAccountService _accountService;
-        private readonly ApplicationDbContext _applicationDbContext;
 
         public UserTaskController(IUserTaskService userTaskService, IAccountService accountService, ApplicationDbContext applicationDbContext)
         {
             _userTaskService = userTaskService;
             _accountService = accountService;
-            _applicationDbContext = applicationDbContext;
         }
 
         public async Task<IActionResult> GetSortedUserTasksByPriority()
         {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-            var activeAccountId = activeAccount.Id;
-            var response = await _userTaskService.GetSortedUserTasksByPriority(activeAccountId);
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
+                if (activeAccountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+                var activeAccountId = activeAccountDto.Id;
+                var response = await _userTaskService.GetSortedUserTasksByPriority(activeAccountId);
                 var result = response.Select(q => new UserTaskViewModel
                 {
                     Id = q.Id,
@@ -41,6 +44,10 @@ namespace EmmaWorkManagementProject.Controllers
                 }).ToArray();
 
                 return View(result);
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
@@ -50,22 +57,30 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetTodayUserTasks()
         {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-            var activeAccountId = activeAccount.Id;
-            var response = await _userTaskService.GetTodayUserTasksAsync(activeAccountId);
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                    var result = response.Select(q => new UserTaskViewModel
-                    {
-                        Id = q.Id,
-                        Name = q.Name,
-                        Summary = q.Summary,
-                        DateOfCreation = q.DateOfCreation,
-                        DateOfCompletion = q.DateOfCompletion,
-                        Priority = q.Priority,
-                    }).ToArray();
+                if(activeAccountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+                var activeAccountId = activeAccountDto.Id;
+                var response = await _userTaskService.GetTodayUserTasksAsync(activeAccountId);
+                var result = response.Select(q => new UserTaskViewModel
+                {
+                    Id = q.Id,
+                    Name = q.Name,
+                    Summary = q.Summary,
+                    DateOfCreation = q.DateOfCreation,
+                    DateOfCompletion = q.DateOfCompletion,
+                    Priority = q.Priority,
+                }).ToArray();
 
                 return View(result);
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
@@ -75,10 +90,16 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetImportantUserTasks()
         {
-            var activeAccountId = (await _accountService.GetAccountByEmail(User.Identity.Name)).Id;
-            var response = await _userTaskService.GetImportantUserTasksAsync(activeAccountId);
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
+                if (activeAccountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+
+                var activeAccountId = activeAccountDto.Id;
+                var response = await _userTaskService.GetImportantUserTasksAsync(activeAccountId);
                 var result = response.Select(q => new UserTaskViewModel
                 {
                     Id = q.Id,
@@ -90,6 +111,10 @@ namespace EmmaWorkManagementProject.Controllers
                 }).ToArray();
 
                 return View(result);
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
@@ -99,11 +124,16 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetUpcomingUserTasks()
         {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-            var activeAccountId = activeAccount.Id;
-            var response = await _userTaskService.GetUpcomingUserTasksAsync(activeAccountId);
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
+                if (activeAccountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+
+                var activeAccountId = activeAccountDto.Id;
+                var response = await _userTaskService.GetUpcomingUserTasksAsync(activeAccountId);
                 var result = response.Select(q => new UserTaskViewModel
                 {
                     Id = q.Id,
@@ -115,6 +145,10 @@ namespace EmmaWorkManagementProject.Controllers
                 }).ToArray();
 
                 return View(result);
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
@@ -124,11 +158,16 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetOverdueUserTasks()
         {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-            var activeAccountId = activeAccount.Id;
-            var response = await _userTaskService.GetOverdueUserTasksAsync(activeAccountId);
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
+                if (activeAccountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+
+                var activeAccountId = activeAccountDto.Id;
+                var response = await _userTaskService.GetOverdueUserTasksAsync(activeAccountId);
                 var result = response.Select(q => new UserTaskViewModel
                 {
                     Id = q.Id,
@@ -140,6 +179,10 @@ namespace EmmaWorkManagementProject.Controllers
                 }).ToArray();
 
                 return View(result);
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
@@ -156,11 +199,50 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpPost]
         public async Task<IActionResult> GetUserTasksByName(string name)
         {
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-                var activeAccountId = activeAccount.Id;
+                if (activeAccountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+
+                var activeAccountId = activeAccountDto.Id;
                 var response = await _userTaskService.GetUserTasksByNameAsync(activeAccountId, name);
+                var result = response.Select(q => new UserTaskViewModel
+                {
+                    Id = q.Id,
+                    Name = q.Name,
+                    Summary = q.Summary,
+                    DateOfCreation = q.DateOfCreation,
+                    DateOfCompletion = q.DateOfCompletion,
+                    Priority = q.Priority,
+                }).ToArray();
+
+                return View(result);
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error");
+            }
+        }
+
+        public async Task<IActionResult> GetCompletedTasks()
+        {
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
+            try
+            {
+                if(accountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+
+                var accountId = accountDto.Id;
+                var response = await _userTaskService.GetCompletedTasksAsync(accountId);
                 var result = response.Select(q => new UserTaskViewModel
                 {
                     Id = q.Id,
@@ -181,22 +263,40 @@ namespace EmmaWorkManagementProject.Controllers
 
         public async Task<IActionResult> GetUserTask(int id, bool isJson)
         {
-            var userTask = await _userTaskService.GetUserTask(id);
-            var response = new UserTaskViewModel()
+            try
             {
-                Id = userTask.Id,
-                Name = userTask.Name,
-                Summary = userTask.Summary,
-                DateOfCreation = userTask.DateOfCreation,
-                DateOfCompletion = userTask.DateOfCompletion,
-                Priority = userTask.Priority,
-            };
+                var userTaskDto = await _userTaskService.GetUserTask(id);
+                if (userTaskDto == null)
+                {
+                    throw new ObjectNotFoundException("Task");
+                }
 
-            if (isJson)
-            {
-                return Json(response);
+                var response = new UserTaskViewModel()
+                {
+                    Id = userTaskDto.Id,
+                    Name = userTaskDto.Name,
+                    Summary = userTaskDto.Summary,
+                    DateOfCreation = userTaskDto.DateOfCreation,
+                    DateOfCompletion = userTaskDto.DateOfCompletion,
+                    Priority = userTaskDto.Priority,
+                    Subtasks = userTaskDto.Subtasks
+                };
+
+                if (isJson)
+                {
+                    return Json(response);
+                }
+
+                return View(response);
             }
-            return View(response);
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error");
+            }
         }
 
         [HttpGet]
@@ -206,25 +306,32 @@ namespace EmmaWorkManagementProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserTask(string name, string summary, string priority, DateTime dateOfCompletion)
+        public async Task<IActionResult> AddUserTask(UserTaskViewModel model)
         {
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-                var activeAccountId = activeAccount.Id;
-
-                activeAccount.UserTasks.Add(new UserTask()
+                if (accountDto == null)
                 {
-                    Name = name,
+                    throw new ObjectNotFoundException("Task");
+                }
+                var accountId = accountDto.Id;
+
+                var userTaskDto = new UserTaskDto()
+                {
+                    Name = model.Name,
+                    Summary = model.Summary,
+                    DateOfCompletion = model.DateOfCompletion,
                     DateOfCreation = DateTime.Now,
-                    Priority = priority,
-                    DateOfCompletion = dateOfCompletion,
-                    Summary = summary,
-                    AccountId = activeAccount.Id,
-                });
-                _applicationDbContext.SaveChanges();
+                    Priority = model.Priority,
+                };
+                await _userTaskService.AddUserTask(userTaskDto, accountId);
 
                 return RedirectToAction("GetTodayUserTasks");
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
@@ -250,27 +357,36 @@ namespace EmmaWorkManagementProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateUserTask(UserTaskViewModel enteredUserTask, int id)
+        public async Task<IActionResult> UpdateUserTask(UserTaskViewModel model, int id)
         {
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
-                var userTask = await _userTaskService.GetUserTask(enteredUserTask.Id);
+                if (accountDto == null)
+                {
+                    throw new ObjectNotFoundException("Account");
+                }
+
+                var userTask = await _userTaskService.GetUserTask(model.Id);
                 var updatedUserTask = new UserTaskDto()
                 {
-                    Name = enteredUserTask.Name,
-                    Summary = enteredUserTask.Summary,
-                    DateOfCompletion = enteredUserTask.DateOfCompletion,
+                    Name = model.Name,
+                    Summary = model.Summary,
+                    DateOfCompletion = model.DateOfCompletion,
                     DateOfCreation = userTask.DateOfCreation,
-                    Priority = enteredUserTask.Priority,
+                    Priority = model.Priority,
                     Id = id,
                 };
-                await _userTaskService.UpdateUserTask(updatedUserTask, activeAccount, id);
+                await _userTaskService.UpdateUserTask(updatedUserTask);
                 return RedirectToAction("GetTodayUserTasks");
+            }
+            catch (ObjectNotFoundException objNotFound)
+            {
+                return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
-                throw;
+                return RedirectToAction("Error");
             }
         }
 
@@ -279,6 +395,25 @@ namespace EmmaWorkManagementProject.Controllers
             try
             {
                 await _userTaskService.DeleteUserTask(id);
+                return RedirectToAction("GetTodayUserTasks");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error");
+            }
+        }
+        
+        public async Task<IActionResult> CompleteUserTask(int id)
+        {
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
+            try
+            {
+                if (accountDto == null)
+                {
+                    RedirectToAction("Error");
+                }
+
+                await _userTaskService.CompleteUserTask(id);
                 return RedirectToAction("GetTodayUserTasks");
             }
             catch (Exception ex)

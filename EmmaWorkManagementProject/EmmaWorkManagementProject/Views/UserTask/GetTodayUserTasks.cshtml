@@ -31,13 +31,10 @@
                     <div class="row taskToolbar-actions">
                         <div class="col sortingAction">
                             <button class="btn btn-light" type="button" aria-haspopup="true" aria-expanded="false">
-                                <a asp-action="GetTodayUserTasks" class="actionHome">
+                                <a asp-action="GetCompletedTasks" class="actionHome">
                                     <span class="sorting">
                                         <span>
-                                            Home
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
-                                            </svg>
+                                            See all completed tasks
                                         </span>
                                     </span>
                                 </a>
@@ -60,21 +57,15 @@
                                 <div class="checkbox_input col-md-1">
                                     @if (userTask.Priority == "High")
                                     {
-                                        <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
-                                            <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger">
-                                        </a>
+                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@userTask.Id'})">
                                     }
                                     else if (userTask.Priority == "Medium")
                                     {
-                                        <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
-                                            <input type="checkbox" id="todo" name="todo" value="todo" class="border-warning bg-warning">
-                                        </a>
+                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-warning bg-warning" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@userTask.Id'})">
                                     }
                                     else
                                     {
-                                        <a class="todo_button" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
-                                            <input type="checkbox" id="todo" name="todo" value="todo" class="border-success bg-success">
-                                        </a>
+                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-success bg-success" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@userTask.Id'})">
                                     }
                                 </div>
                                 <div class="label_container col-md-10">
@@ -146,7 +137,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-1 deleteButton">
-                                    <button type="button" class="deleteButton_button btn btn-outline-danger">
+                                    <button type="button" class="deleteButton_button btn btn-outline-danger" onclick="CreateMergeReport()">
                                         <a asp-controller="UserTask" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />

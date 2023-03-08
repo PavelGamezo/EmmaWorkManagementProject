@@ -23,14 +23,16 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
 
         Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(int activeAccountId, string name);
 
+        Task<IReadOnlyCollection<UserTaskDto>> GetCompletedTasksAsync(int activeAccountId);
+
         Task<UserTaskDto> GetUserTask(int userTaskId);
 
-        //Task<IReadOnlyCollection<UserTaskDto>> GetAllByInclude();
+        Task UpdateUserTask(UserTaskDto userTask);
 
-        Task UpdateUserTask(UserTaskDto userTask, Account activeAccount, int id);
-
-        Task AddUserTask(UserTaskDto userTask);
+        Task AddUserTask(UserTaskDto userTask, int accountModelId);
 
         Task DeleteUserTask(int id);
+
+        Task CompleteUserTask(int id);
     }
 }

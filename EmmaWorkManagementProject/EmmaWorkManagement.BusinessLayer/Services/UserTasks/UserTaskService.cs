@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EmmaWorkManagement.Data.Interaces;
 
 namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
 {
@@ -22,11 +23,13 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
     {
         private readonly IMapper _mapper;
         private readonly IUserTaskRepository _userTaskRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public UserTaskService(IMapper mapper ,IUserTaskRepository userTaskRepository)
+        public UserTaskService(IMapper mapper ,IUserTaskRepository userTaskRepository, IAccountRepository accountRepository)
         {
             _mapper = mapper;
             _userTaskRepository = userTaskRepository;
+            _accountRepository = accountRepository;
         }
 
         #region IUserTaskService Members
@@ -35,8 +38,6 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
         public async Task<IReadOnlyCollection<UserTaskDto>> GetSortedUserTasksByPriority(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
-                                            .Include(q=>q.Subtasks)
-                                            .Include(q=>q.Account)
                                             .Where(q=>q.AccountId == activeAccountId)
                                             .OrderByDescending(x => x.Priority)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
@@ -46,22 +47,20 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
         public async Task<IReadOnlyCollection<UserTaskDto>> GetTodayUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
-                                            .Include(q => q.Subtasks)
-                                            .Include(q=>q.Account)
                                             .Where(q=>q.AccountId == activeAccountId)
-                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q=>q.DateOfCompletion.Day == DateTime.Now.Day)
+                                            .Where(q=>q.IsActive == false)
+                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         }
         
         public async Task<IReadOnlyCollection<UserTaskDto>> GetImportantUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
-                                            .Include(q => q.Subtasks)
-                                            .Include(q => q.Account)
                                             .Where(q => q.AccountId == activeAccountId)
-                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q => q.Priority == "High")
+                                            .Where(q => q.IsActive == false)
+                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
             
         }
@@ -69,32 +68,29 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
         public async Task<IReadOnlyCollection<UserTaskDto>> GetUpcomingUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
-                                            .Include(q => q.Subtasks)
-                                            .Include(q => q.Account)
                                             .Where(q => q.AccountId == activeAccountId)
-                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q=>q.DateOfCompletion > DateTime.Now || q.DateOfCompletion.Day == DateTime.Now.Day)
+                                            .Where(q => q.IsActive == false)
+                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         } 
         
         public async Task<IReadOnlyCollection<UserTaskDto>> GetOverdueUserTasksAsync(int activeAccountId)
         {
             return await _userTaskRepository.GetAll()
-                                            .Include(q => q.Subtasks)
-                                            .Include(q => q.Account)
                                             .Where(q => q.AccountId == activeAccountId)
-                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .Where(q=>q.DateOfCompletion < DateTime.Now && q.DateOfCompletion.Day != DateTime.Now.Day)
+                                            .Where(q => q.IsActive == false)
+                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         }
         
         public async Task<IReadOnlyCollection<UserTaskDto>> GetUserTasksByNameAsync(int activeAccountId, string name)
         {
             return await _userTaskRepository.GetAll()
-                                            .Include(q => q.Subtasks)
-                                            .Include(q => q.Account)
                                             .Where(q => q.AccountId == activeAccountId)
                                             .Where(q => q.Name.Contains(name))
+                                            .Where(q => q.IsActive == false)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         }
@@ -103,19 +99,21 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
         {
             var date = DateTime.Now;
             return await _userTaskRepository.GetAll()
-                                            .Include(q => q.Subtasks)
-                                            .Include(q => q.Account)
                                             .Where(q => q.AccountId == activeAccountId)
                                             .Where(q => q.DateOfCompletion.Day == date.Day && q.DateOfCompletion.Year == date.Year)
+                                            .Where(q => q.IsActive == false)
                                             .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
                                             .ToArrayAsync();
         }
 
-        /*public async Task<IReadOnlyCollection<UserTaskDto>> GetAllByIncludeAsync()
+        public async Task<IReadOnlyCollection<UserTaskDto>> GetCompletedTasksAsync(int activeAccountId)
         {
-
-            return await _userTaskRepository.GetAllByInclude().Where(q=>q.)
-        }*/
+            return await _userTaskRepository.GetAll()
+                                            .Where(q => q.AccountId == activeAccountId)
+                                            .Where(q => q.IsActive == true)
+                                            .ProjectTo<UserTaskDto>(_mapper.ConfigurationProvider)
+                                            .ToArrayAsync();
+        }
 
         public async Task<UserTaskDto> GetUserTask(int userTaskId)
         {
@@ -124,14 +122,14 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
             return mappingUserTask;
         }
 
-        public async Task UpdateUserTask(UserTaskDto userTask, Account activeAccount, int id)
+        public async Task UpdateUserTask(UserTaskDto userTaskDto)
         {
-            var task = await _userTaskRepository.GetById(id);
-            task.DateOfCompletion = userTask.DateOfCompletion;
-            task.Summary = userTask.Summary;
-            task.Name = userTask.Name;
-            task.Priority = userTask.Priority;
-            
+            var userTask = await _userTaskRepository.GetById(userTaskDto.Id);
+            userTask.Name = userTaskDto.Name;
+            userTask.Summary = userTaskDto.Summary;
+            userTask.DateOfCompletion = userTaskDto.DateOfCompletion;
+            userTask.Priority = userTaskDto.Priority;
+
             await _userTaskRepository.Save();
         }
 
@@ -143,11 +141,25 @@ namespace EmmaWorkManagement.BusinessLayer.Services.UserTasks
             await _userTaskRepository.Save();
         }
 
-        public async Task AddUserTask(UserTaskDto userTask)
+        public async Task AddUserTask(UserTaskDto userTaskModel, int accountModelId)
         {
-            var mappingUserTask = _mapper.Map<UserTask>(userTask);
-            await _userTaskRepository.Create(mappingUserTask);
+            var mappingAccount = _accountRepository.GetAll().FirstOrDefault(q=>q.Id == accountModelId);
+            var mappingUserTask = _mapper.Map<UserTask>(userTaskModel);
+
+            mappingUserTask.Account = mappingAccount;
+            mappingUserTask.AccountId = mappingAccount.Id;
+
+            mappingAccount.UserTasks.Add(mappingUserTask);
+
             await _userTaskRepository.Save();
+        }
+
+        public async Task CompleteUserTask(int id)
+        {
+            var userTask = await _userTaskRepository.GetById(id);
+            userTask.IsActive = !userTask.IsActive;
+
+            _userTaskRepository.Save();
         }
 
         #endregion

@@ -26,7 +26,9 @@ namespace EmmaWorkManagementProject.Database.Repositories
 
         public async Task<UserTask> GetById(int id)
         {
-            return await _applicationDbContext.UserTasks.FindAsync(id);
+            return await _applicationDbContext.UserTasks.Include(q => q.Subtasks)
+                                                        .Include(q => q.Account)
+                                                        .FirstOrDefaultAsync(q => q.Id == id);
         }
 
         public Task Save()
@@ -36,7 +38,9 @@ namespace EmmaWorkManagementProject.Database.Repositories
 
         public IQueryable<UserTask> GetAll()
         {
-            return _applicationDbContext.UserTasks.AsQueryable();
+            return _applicationDbContext.UserTasks.Include(q => q.Account)
+                                                  .Include(q => q.Subtasks)
+                                                  .AsQueryable();
         }
         
         /*public IQueryable<UserTask> GetAllByInclude()

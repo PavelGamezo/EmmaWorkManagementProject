@@ -1,7 +1,9 @@
 ﻿using EmmaWorkManagement.BusinessLayer.Dtos;
 using EmmaWorkManagement.BusinessLayer.Interfaces;
+using EmmaWorkManagement.BusinessLayer.Services.Accounts;
 using EmmaWorkManagement.Data;
 using EmmaWorkManagement.Entities.Entities;
+using EmmaWorkManagement.Exceptions;
 using EmmaWorkManagementProject.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,21 +20,6 @@ namespace EmmaWorkManagementProject.Controllers
             _subtaskService = subtaskService;
             _userTaskService = userTaskService;
             _applicationDbContext = applicationDbContext;
-        }
-
-        public async Task<IActionResult> GetAllSubtasks(int id)
-        {
-            var mappedSubtasks = (await _subtaskService.GetAllActiveSubtasks(id))
-                .Select(q => new SubtaskViewModel
-                {
-                    Id = q.Id,
-                    Name = q.Name,
-                    Comment = q.Comment,
-                    UserTaskId = q.UserTaskId
-                })
-                .ToArray();
-
-            return View(mappedSubtasks);
         }
 
         public async Task DeleteSubtask(int id)
@@ -63,23 +50,72 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSubtask(SubtaskViewModel model)
         {
-            var activeUserTask = _applicationDbContext.UserTasks.FirstOrDefault(q=>q.Id == model.UserTaskId);
-            var subtaskDto = new SubtaskDto()
+            var userTaskDto = await _userTaskService.GetUserTask(model.UserTaskId);
+            try
             {
-                Name = model.Name,
-                Comment = model.Comment,
-                UserTaskId = model.UserTaskId
-            };
+                if(userTaskDto is null)
+                {
+                    throw new ObjectNotFoundException("UserTask");
+                }
+                var userTaskId = userTaskDto.Id;
+                var subtaskDto = new SubtaskDto()
+                {
+                    Name = model.Name,
+                    Comment = model.Comment,
+                    UserTaskId = model.UserTaskId
+                };
 
-            activeUserTask.Subtasks.Add(new Subtask()
+                await _subtaskService.CreateSubtask(subtaskDto, userTaskId);
+
+                return RedirectToAction("GetTodayUserTasks", "UserTask");
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateSubtask(int id)
+        {
+            var subtaskDto = await _subtaskService.GetSubtask(id);
+            var model = new SubtaskViewModel()
             {
                 Name = subtaskDto.Name,
                 Comment = subtaskDto.Comment,
+                Id = id,
                 UserTaskId = subtaskDto.UserTaskId
-            });
-            _applicationDbContext.SaveChanges();
+            };
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateSubtask(SubtaskViewModel model)
+        {
+            var subtaskDto = new SubtaskDto()
+            {
+                Id = model.Id,
+                UserTaskId = model.UserTaskId,
+                Name = model.Name,
+                Comment = model.Comment
+            };
+
+            await _subtaskService.UpdateSubtask(subtaskDto);
 
             return RedirectToAction("GetTodayUserTasks", "UserTask");
+        }
+
+        public async Task CompleteSubtask(int id)
+        {
+            try
+            {
+                await _subtaskService.CompleteSubtask(id);
+            }
+            catch (Exception ex)
+            {
+                RedirectToAction("Error");
+            }
         }
     }
 }

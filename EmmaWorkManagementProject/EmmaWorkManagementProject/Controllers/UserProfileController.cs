@@ -27,15 +27,14 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserProfile()
         {
-            var account = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                if (account is null)
+                if (accountDto is null)
                 {
                     throw new ObjectNotFoundException("Account");
                 }
-                var accountId = activeAccount.Id;
+                var accountId = accountDto.Id;
                 var activeProfile = await _profileService.GetUserProfile(accountId);
 
                 return View(new UserProfileViewModel()
@@ -62,15 +61,15 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpPost]
         public async Task<IActionResult> GetUserProfile(UserProfileViewModel profile)
         {
-            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
+            var accountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                if (activeAccount is null)
+                if (accountDto is null)
                 {
                     throw new ObjectNotFoundException(profile.Name);
                 }
 
-                var activeAccountId = activeAccount.Id;
+                var activeAccountId = accountDto.Id;
                 var activeProfile = await _profileService.GetUserProfile(activeAccountId);
                 activeProfile.About = profile.About;
 

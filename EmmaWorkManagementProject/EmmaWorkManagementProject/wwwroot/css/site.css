@@ -150,6 +150,11 @@ a {
     margin: auto;
 }
 
+.action_subtask_add {
+    width: 90%;
+    margin: auto;
+}
+
 .navbarHomeActionImage {
     vertical-align: text-top;
 }
@@ -376,6 +381,11 @@ task_list_item {
 .task_list_item__content__wrapper {
     display: flex;
     justify-content: space-between;
+
+}
+
+#todo:checked + .task_list_item__content__wrapper {
+    text-decoration: line-through;
 }
 
 .wrapper_info {
@@ -468,11 +478,56 @@ task_list_item {
     opacity: 1;
 }
 
+#checkbox_todo {
+    position: relative;
+    margin-top: 10px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #bdc1c6;
+    border-radius: 50px;
+    appearance: none;
+    outline: 0;
+    cursor: pointer;
+    transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
+}
+
+#checkbox_todo:hover {
+    --bs-bg-opacity: 1;
+}
+
+#checkbox_todo::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: -1px;
+    left: 4px;
+    width: 6px;
+    height: 12px;
+    border-style: solid;
+    border-color: #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    --bs-bg-opacity: 0;
+}
+
+#checkbox_todo:checked {
+    color: #fff;
+    border-color: #06842c;
+    background-color: #06842c;
+    --bs-bg-opacity: 1;
+}
+
+#checkbox_todo::before {
+    opacity: 1;
+}
+
+
 .checkbox_input {
-    opacity:1;
+    opacity: 1;
     display: flex;
     justify-content: center;
-    margin:auto;
+    margin: auto;
 }
 
 .bg-success {
@@ -534,6 +589,10 @@ label:: before {
 .deleteButton_button a:hover {
     color: darkorange;
     transition: all 0.25s;
+}
+
+.subtask_actions_container{
+    display:flex;
 }
 
 .updateButtons {
@@ -605,5 +664,22 @@ label:: before {
 
 .submitAddBtn:hover {
     border: 1px solid rgba(0,0,0,.125);
+}
+
+input:checked + span {
+    text-decoration: line-through;
+}
+
+.subtask_checkbox {
+    --bs-bg-opacity: 0;
+}
+
+.subtask_checkbox:hover {
+    --bs-bg-opacity: 1;
+    background-color: #bdc1c6;
+}
+
+.container_line{
+
 }
 

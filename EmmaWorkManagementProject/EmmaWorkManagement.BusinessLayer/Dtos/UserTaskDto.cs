@@ -16,6 +16,7 @@ namespace EmmaWorkManagement.BusinessLayer.Dtos
         public DateTime DateOfCreation { get; set; }
         public DateTime DateOfCompletion { get; set; }
         public string Priority { get; set; }
+        public bool IsActive { get; set; }
 
         public int AccountId { get; set; }
         public Account Account { get; set; }

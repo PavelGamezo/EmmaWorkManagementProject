@@ -1,17 +1,28 @@
-﻿@{
+﻿@model LoginViewModel
+
+@{
     Layout = "_AccountLayout";
     ViewData["Title"] = "Login page";
 }
 
 <form asp-action="Login" method="post" class="login">
-    <div class="mb-3">
-        <label  class="form-label">Enter your email</label>
+    <span class="login_form__title">Account Login</span>
+    @Html.ValidationSummary("", new {@class = "text-danger"})
+    <span class="text__label">Email</span>
+    <div class="wrap_input">
         <input name="Email" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
+    <span class="text__label">Password</span>
+    <div class="wrap_input__password">
         <input name="Password" type="password" class="form-control" id="exampleInputPassword1">
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="action_update_password__container">
+        <div>
+            <a asp-action="PasswordRecovery" asp-controller="Account" class="action_update_password">Forgot Password?</a>
+        </div>
+    </div>
+    <div class="buttons_container">
+        <button type="submit" class="btn login_submit_button">Submit</button>
+    </div>
 </form>

@@ -1,0 +1,163 @@
+﻿@using EmmaWorkManagement.Entities.Enums
+
+@model EmmaWorkManagementProject.Models.UserTaskViewModel[]
+
+@{
+    ViewData["Title"] = "Completed tasks";
+}
+
+<link rel="stylesheet" href="css/font-glyphicons.css">
+<div class="wrapper" id="wrapper">
+    <div class="container tasksToolbar my-2">
+        <div class="row taskToolbar-top">
+            <div class="col-sm-9 taskToolbar-left-container">
+                <div class="row hamburger-container">
+                    <div class="col tasksToolbar-headline">
+                        <div class="taskToolbar p-1">
+                            <p class="listTitle">@ViewData["Title"]</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="tasksToolbar-subline">
+                            <span class="todayDate">
+                                <span class="date">@((MonthEnum)DateTime.Now.Month). @DateTime.Now.Day.ToString(), @DateTime.Now.DayOfWeek.ToString()</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 taskToolbar-right-container">
+                <div class="taskToolbar-right">
+                    <div class="row taskToolbar-actions">
+                        <div class="col sortingAction">
+                            <button class="btn btn-light" type="button" aria-haspopup="true" aria-expanded="false">
+                                <a asp-action="GetTodayUserTasks" class="actionHome">
+                                    <span class="sorting">
+                                        <span>
+                                            Home
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content wrapper-->
+    <div class="container-fluid">
+        <div class="container p-3">
+            <div class="list_holder">
+                <ul class="list_items">
+                    @foreach (var userTask in Model)
+                    {
+                        <li class="task_list_item">
+                            <div class="task_list_item__body row">
+                                <div class="checkbox_input col-md-1">
+                                    @if (userTask.Priority == "High")
+                                    {
+                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-danger bg-danger" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@userTask.Id'})" checked>
+                                    }
+                                    else if (userTask.Priority == "Medium")
+                                    {
+                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-warning bg-warning" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@userTask.Id'})" checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="todo" name="todo" value="todo" class="border-success bg-success" onclick="checkboxScript({url: '/UserTask/CompleteUserTask', data: '@userTask.Id'})" checked>
+                                    }
+                                </div>
+                                <div class="label_container col-md-10">
+                                    <div class="task_list_item__content row">
+                                        <div class="task_list_item__content__wrapper col">
+                                            <div class="wrapper_container row">
+                                                <div class="task_name col">@userTask.Name</div>
+                                                <div class="task_summary">@userTask.Summary</div>
+                                            </div>
+                                            <div class="wrapper_info">
+                                                <div class="wrapper_info__container">
+                                                    <div class="wrapper_info__content">
+                                                        <button type="button" class="btn getInfoAction" onclick="openModal({url: '/UserTask/GetUserTask', data: '@userTask.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="wrapper_info__content">
+                                                        <button type="button" class="btn getInfoAction" onclick="openModal({url: '/UserTask/UpdateUserTask', data: '@userTask.Id'})" data-toggle="ajax-modal" data-target="Modal">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="wrapper_info__content">
+                                                        <a class="getInfoAction" asp-controller="UserTask" asp-action="GetUserTask" asp-route-userTaskId="@userTask.Id">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task_list_item__dateInfoContainer col">
+                                            @if (userTask.Priority == "High")
+                                            {
+                                                <span class="text-danger">@userTask.Priority priority</span>
+                                            }
+                                            else if (userTask.Priority == "Medium")
+                                            {
+                                                <span class="text-warning">@userTask.Priority priority</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-success">@userTask.Priority priority</span>
+                                            }
+                                            @if (userTask.DateOfCompletion < DateTime.Now && userTask.DateOfCompletion.Day != DateTime.Now.Day)
+                                            {
+                                                <span class="task_list_item__dateInfo text-danger">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-calendar4" viewBox="0 0 16 16">
+                                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
+                                                    </svg>
+                                                    @((MonthEnum)userTask.DateOfCompletion.Month). @userTask.DateOfCompletion.Day, @userTask.DateOfCompletion.DayOfWeek
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="task_list_item__dateInfo">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-calendar4" viewBox="0 0 16 16">
+                                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
+                                                    </svg>
+                                                    @((MonthEnum)userTask.DateOfCompletion.Month). @userTask.DateOfCompletion.Day, @userTask.DateOfCompletion.DayOfWeek
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 deleteButton">
+                                    <button type="button" class="deleteButton_button btn btn-outline-danger" onclick="CreateMergeReport()">
+                                        <a asp-controller="UserTask" asp-action="DeleteUserTask" asp-route-id="@userTask.Id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                                <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                            </svg>
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>

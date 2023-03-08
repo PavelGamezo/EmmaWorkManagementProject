@@ -6,7 +6,7 @@ namespace EmmaWorkManagementProject.Models
     {
 
         [Required(ErrorMessage = "Enter your email")]
-        [DataType(DataType.Password)]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Enter your password")]

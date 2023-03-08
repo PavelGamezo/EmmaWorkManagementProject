@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using EmmaWorkManagement.Entities;
 using Microsoft.EntityFrameworkCore;
+using EmmaWorkManagement.Exceptions;
 
 namespace EmmaWorkManagementProject.Controllers
 {
@@ -25,7 +26,7 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginViewModel());
         }
 
         [HttpPost]
@@ -35,10 +36,17 @@ namespace EmmaWorkManagementProject.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var account = await _applicationDbContext.Accounts.FirstOrDefaultAsync(q => q.Email == model.Email && q.Password == model.Password);
-                    if (account != null)
+                    var accountDto = await _accountService.GetAccountByEmailAsync(model.Email);
+
+                    if (accountDto != null)
                     {
-                        await Authenticate(account.Email, $"{account.Name} {account.Surname}");
+                        if(accountDto.Password != model.Password)
+                        {
+                            ModelState.AddModelError("", "Incorrect username and/or password");
+                            return View(model);
+                        }
+
+                        await Authenticate(accountDto.Email, $"{accountDto.Name} {accountDto.Surname}");
 
                         return RedirectToAction("GetTodayUserTasks", "UserTask");
                     }
@@ -56,7 +64,7 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(new RegisterViewModel());
         }
 
         [HttpPost]
@@ -64,8 +72,8 @@ namespace EmmaWorkManagementProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var searchingAccount = _accountService.GetAccountByEmail(account.Email).Result;
-                if (searchingAccount == null)
+                var searchingAccountDto = await _accountService.GetAccountByEmailAsync(account.Email);
+                if (searchingAccountDto == null)
                 {
                     await _accountService.Register(new AccountDto()
                     {
@@ -78,13 +86,13 @@ namespace EmmaWorkManagementProject.Controllers
 
                     return RedirectToActionPermanent("GetTodayUserTasks", "UserTask");
                 }
-                ModelState.AddModelError("", "Account has already excist");
+                ModelState.AddModelError("Email", "Account has already excist");
 
                 return View(account);
             }
             else
             {
-                ModelState.AddModelError("", "Account is already excist");
+                ModelState.AddModelError("", "Incorrect input");
             }
 
             return View(account);
@@ -99,21 +107,50 @@ namespace EmmaWorkManagementProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdatePassword(AccountUpdateViewModel model)
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var activeAccountDto = await _accountService.GetAccountByEmailAsync(User.Identity.Name);
             try
             {
-                if (activeAccount is null)
+                if (activeAccountDto is null)
                 {
-                    RedirectToAction("Error");
+                    throw new ObjectNotFoundException(model.Email);
                 }
-                activeAccount.Password = model.Password;
-                _applicationDbContext.SaveChanges();
+                activeAccountDto.Password = model.Password;
+                await _accountService.UpdateAccountPassword(activeAccountDto);
 
                 return RedirectToAction("GetUserProfile", "UserProfile");
             }
             catch
             {
                 throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PasswordRecovery()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PasswordRecovery(AccountUpdateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var accountDto = await _accountService.GetAccountByEmailAsync(model.Email);
+                if (accountDto is null)
+                {
+                    ModelState.AddModelError("Email", "Incorrect email input");
+                    return View(model);
+                }
+                accountDto.Password = model.Password;
+
+                await _accountService.UpdateAccountPassword(accountDto);
+
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                return View(model);
             }
         }
 
@@ -131,14 +168,13 @@ namespace EmmaWorkManagementProject.Controllers
                 new Claim(ClaimTypes.UserData, userFullName)
             };
             var id = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(id);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         public async Task<IActionResult> Delete()
         {
-            var activeAccount = _accountService.GetAccountByEmail(User.Identity.Name).Result;
+            var activeAccount = await _accountService.GetAccountByEmail(User.Identity.Name);
             await _accountService.DeleteAccount(activeAccount.Id);
             return RedirectToAction("Index", "Home");
         }

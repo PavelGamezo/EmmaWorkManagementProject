@@ -5,12 +5,8 @@ namespace EmmaWorkManagementProject.Models
     public class AccountUpdateViewModel
     {
         [Required(ErrorMessage = "Enter your email")]
-        [DataType(DataType.Password)]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-
-        [Required(ErrorMessage = "Enter your email")]
-        [DataType(DataType.Password)]
-        public string EmailConfirm { get; set; }
 
         [Required(ErrorMessage = "Enter your password")]
         [MinLength(8, ErrorMessage = "New password is too small")]

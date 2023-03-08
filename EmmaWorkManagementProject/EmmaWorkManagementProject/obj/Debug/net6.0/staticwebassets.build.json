@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7TVcEi3EU3Lbs0T8RrZybg7oLn+vKpEf7jA35tOqM/k=",
+  "Hash": "n4gI0atg5eTprx3zi4TAJgAUwvVYFGs/geqpPV5FeSY=",
   "Source": "EmmaWorkManagementProject",
   "BasePath": "_content/EmmaWorkManagementProject",
   "Mode": "Default",
@@ -151,6 +151,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\js\\checkboxScript.js",
+      "SourceId": "EmmaWorkManagementProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\",
+      "BasePath": "_content/EmmaWorkManagementProject",
+      "RelativePath": "js/checkboxScript.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\checkboxScript.js"
     },
     {
       "Identity": "D:\\Программирование\\TeachMeSkills\\Проект\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\EmmaWorkManagementProject\\wwwroot\\js\\modal.js",

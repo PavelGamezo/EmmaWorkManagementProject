@@ -16,6 +16,7 @@ namespace EmmaWorkManagementProject.Models
 
         [Display(Name = "Password")]
         [Required(ErrorMessage = "Enter Password")]
+        [MinLength(8, ErrorMessage = "The minimum length must be greater than 8 characters")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

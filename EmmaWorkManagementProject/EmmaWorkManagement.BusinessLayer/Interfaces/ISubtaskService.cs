@@ -10,8 +10,11 @@ namespace EmmaWorkManagement.BusinessLayer.Interfaces
 {
     public interface ISubtaskService
     {
-        Task CreateSubtask(SubtaskDto model);
+        Task<SubtaskDto> GetSubtask(int id);
+        Task CreateSubtask(SubtaskDto model, int userTaskId);
         Task DeleteSubtask(int id);
         Task<IReadOnlyCollection<Subtask>> GetAllActiveSubtasks(int id);
+        Task CompleteSubtask(int id);
+        Task UpdateSubtask(SubtaskDto model);
     }
 }
